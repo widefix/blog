@@ -21,7 +21,7 @@ Consider a typical Rails application development scenario.
 In branch A I add a mandatory (not null) field into DB via migration and run it. Then I switch to another branch B.
 This branch's code is not aware of that new field.
 As the result, the code is failing with an error "null value provided for non-null field".
-Moreover, DB rake tasks generate a diff on `schema.rb` that's not relevant to the current branch.
+Moreover, DB rake tasks generate a diff in `schema.rb` that's not relevant to the current branch.
 I can switch to branch A and roll back the not needed migration, but I need to remember that branch. That also wastes my time.
 
 An example of an exception that starts raising in the application "spontaneously":
@@ -34,7 +34,7 @@ ActiveRecord::NotNullViolation:
 
 ### Solution
 
-What if we have a tool that looks after run migrations outside of the current branch and rolls them back automatically?
+What if we have a tool that looks after run migrations outside the current branch and rolls them back automatically?
 It would save significant time.
 
 These thoughts made us build this tool. It's [open sourced](https://github.com/widefix/actual_db_schema) and ready for your usage.
@@ -58,11 +58,11 @@ How does it understand which migration should revert? Simply, it collects all ru
 Knowing the difference between migrations that are related to the current branch (kept inside `db/migrate` folder)
 and actually run (kept inside `tmp` folder), it rolls the unrelated migrations back.
 
-All seems well, but this solution has some caveats:
+### Conclusion
 
-- You don't delete migrations from `db/migrate` folder manually. In case a migration needs deletion, you should run `rails db:rollback` task and only then remove migration. But we already usually do that.
-- If you use gem that squashes migrations, put this Rake task as a dependecy `db:rollback_branches`.
-- It assumes the migrations are reversible. Unreversible migrations won't roll back. You should address such situations by hand.
+All seems well, but this solution has one caveat. It assumes the migrations are reversible.
+Unreversible migrations won't roll back. Handle such situations by hand.
 
 The last item can be a pain point. Fortunately, most migrations are reversible. Hence, still this tool can save much of the dev time.
 
+[Your feedback and questions are always welcomed](https://github.com/widefix/actual_db_schema/discussions).
