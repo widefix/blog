@@ -9,6 +9,8 @@ share: true
 image: actual_db_schema.jpg
 ---
 
+**TL;DR:** Use [actual_db_schema](https://github.com/widefix/actual_db_schema) gem.
+
 Switching between branches with migrations run for a Rails application causes the DB inconsistent.
 Eventually, the application starts raising exceptions coming from DB. You start debugging and spend some time on that.
 It turns out that some migrations from not merged branches need rollback.
