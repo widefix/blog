@@ -9,6 +9,7 @@ redirect_from:
   - /2014/01/30/change-data-in-migrations-like-a-boss/
 ---
 
+TL;DR: use [migration_data](https://github.com/ka8725/migration_data) gem.
 
 Changing data in production is a common problem for Rails developers. Assume you have a Rails project. One day you decide to change the database schema and want to add some new column. Then you have to go through all existing records and change data to be actual according to this new schema. There are solutions to overcome this. But they have disadvantages. You will see them in this article. And finally, figure out how to avoid the issues with `migration_data` gem.
 
