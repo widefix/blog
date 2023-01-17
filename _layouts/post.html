@@ -75,7 +75,7 @@
         </div>
         {% assign ref='#headline' %}
         {% if page.image %}
-          <img src="/images/{{ page.image }}" style="object-fit: cover; height: 200px; width: 100%;" />
+          <img src="/images/{{ page.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
         {% endif %}
         {{ content }}
         {% assign ref='#bottomline' %}
