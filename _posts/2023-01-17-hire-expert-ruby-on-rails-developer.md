@@ -7,7 +7,7 @@ keywords: "ruby on rails developers,ruby on rails developer,ruby developer,ruby 
 tags: []
 comments: true
 share: true
-image: tsunami.jpg
+image: rails.jpg
 ---
 
 Hiring an expert Ruby on Rails developer can be a crucial step for your business success. Ruby on Rails, also known as Rails, is a popular web application framework written in the Ruby programming language. It is known for its simplicity and ease of use, making it a favorite among developers.
