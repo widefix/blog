@@ -35,7 +35,7 @@ Fortunately, there is [GitHub Pages](https://pages.github.com). It's an instrume
 
 Three points from four are closed with the tool and also one more possible wish to have a custom domain for the site. Not bad for one tool. Also, don't forget - it's absolutely free.
 
-> You will not see here how to set up a github pages project. It's other kind of story. Don't be sad, it's not hard as it seems. In [this article](/2012/07/19/jekyll-feature-blog-engine/) you will see how to do it. Also there is tutorial on the [official site](https://pages.github.com/).
+> You will not see here how to set up a github pages project. It's other kind of story. Don't be sad, it's not hard as it seems. In [this article](/jekyll-feature-blog-engine/) you will see how to do it. Also there is tutorial on the [official site](https://pages.github.com/).
 
 May be main problem in this solution may be *git* if you don't familiar with this. Unfortunately, you can't use this solution if you don't know [git basics](http://git-scm.com/book). So if you are in such situation you have two choices: learn git or hire a specialist.
 
