@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "What is ruby on rails good for"
+title: "What is Ruby on Rails good for"
 modified: 2023-01-22 22:53:09 +0100
 description: "Ruby is a versatile programming language perfect for web development tasks such as building custom web-based applications, e-commerce platforms, content management systems, CRM systems, and APIs. With a large community and the ability to scale, Ruby on Rails (Rails) is a great choice for businesses of all sizes."
 keywords: "what is ruby on rails good for, hire expert ruby on rails developer"
