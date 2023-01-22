@@ -4,10 +4,13 @@ title: "Stripe plan change proration service"
 modified: 2022-06-18 00:41:06 +0300
 description: "A practical example of a ruby service object that calculates Stripe plan change proration."
 tags: [stripe, ruby]
+keywords: "how to turn off prorate on stripe, stripe prorate, stripe prorate subscription, stripe subscription prorate, prorate stripe"
 comments: true
 share: true
 image: proration.jpg
 ---
+
+In this post you will see how to to turn off prorate on Stripe.
 
 [Stripe](https://stripe.com/) is a popular payment system. And very mature one. This service has
 a lot of built-in functionality that all contemporary businesses needs online.
