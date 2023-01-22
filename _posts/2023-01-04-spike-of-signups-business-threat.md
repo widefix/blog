@@ -33,13 +33,13 @@ If you have a **Ruby on Rails application** that needs maintenance, you're in th
 
 Whether you need help fixing bugs, adding new features, or simply keeping your application up-to-date with the latest security patches, we've got you covered. Our maintenance services include:
 
-- Bug fixing: If you've encountered any errors or issues with your application, we can quickly identify and fix the problem to ensure that your application is running smoothly.
+- **Bug fixing**: If you've encountered any errors or issues with your application, we can quickly identify and fix the problem to ensure that your application is running smoothly.
 
-- Feature additions: If you want to add new functionality to your application, we can help you plan and implement the changes you need.
+- **Feature additions**: If you want to add new functionality to your application, we can help you plan and implement the changes you need.
 
-- Security updates: Keeping your application secure is important, and we can help you ensure that your application is up-to-date with the latest security patches and best practices.
+- **Security updates**: Keeping your application secure is important, and we can help you ensure that your application is up-to-date with the latest security patches and best practices.
 
-- Performance optimization: If your application is running slowly or experiencing other performance issues, we can help you identify and resolve the problem to improve the speed and reliability of your application.
+- **Performance optimization**: If your application is running slowly or experiencing other performance issues, we can help you identify and resolve the problem to improve the speed and reliability of your application.
 
 In addition to these services, we also offer ongoing maintenance plans to ensure that your application stays in top shape. With our maintenance plan, you'll receive regular updates and support to keep your application running smoothly.
 
