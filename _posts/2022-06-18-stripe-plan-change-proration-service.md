@@ -138,4 +138,4 @@ made this service clean and readable.
 
 At WideFix, we specialize in connecting Rails applications to Stripe payment systems and maintaining them for optimal performance. Our team of experts have extensive experience in integrating Stripe into Rails apps, and we will work closely with you to ensure a seamless integration. We understand the importance of having a reliable and secure payment system for your business, and we are committed to providing the highest level of support and maintenance to ensure that your Stripe integration runs smoothly. Trust us to handle all of your Stripe integration and maintenance needs, so you can focus on growing your business.
 
-Find out more about the services we offer on our official page at [WideFix.com]((https://widefix.com/)).
+Find out more about the services we offer on our official page at [WideFix.com](https://widefix.com/).
