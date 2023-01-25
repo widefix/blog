@@ -4,9 +4,10 @@ title: "Keep DB schema clean and consistent between branches"
 modified: 2022-11-28 00:41:06 +0300
 description: "Learn how to keep DB schema clean and consistent between branches while develop a Rails application"
 tags: [rails, migrations]
+keywords: "rails migrations,db inconsistency,rails development,revert migrations,open-source gem,actual_db_schema,branch switching,reversible migrations,unreversible migrations,automated migration management,development time-saving,rake task,rails debugging,rails application development,github open source"
 comments: true
 share: true
-image: actual_db_schema.jpg
+image: actual_db_schema.png
 ---
 
 **TL;DR:** Use [actual_db_schema](https://github.com/widefix/actual_db_schema) gem.
