@@ -2,23 +2,13 @@
 layout: page
 permalink: /about-author/
 title : About me
+description: ''
+keywords:
 ---
 
 <img src="/images/my_face.jpg" alt="Andrei Kaleshka" align="left" vspace="5" hspace="5" width="100"/>
-My name is Andrei Kaleshka. I've been working with **Ruby/Rails** since 2009. Using this technology I've implemented many projects:
-**SaaS** applications, **CMS** and **billing** systems, **API** (REST and GraphQL), etc.
+My name is Andrei Kaleshka. I have been working with Ruby/Rails since 2009. I am passionate about clean software architecture, code performance, readability, simplicity, and maintainability. This allows me to build applications with minimal cost but maximum results. I am the sole author of the book [Rake Task Management Essentials](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773).
 
-Apart the commercial commitment I've contributed to open source projects:
-Rails, Datagrid, Inherited resources, Devise, Sinatra, Rake, Enumerize, Homebrew, Cocaine, etc.
-See the whole list [here](https://github.com/ka8725?tab=repositories).
+I am also the founder of [WideFix](https://widefix.com), a custom software development company that specializes in optimizing and maintaining web apps primarily written in Ruby on Rails. Checkout the company [officail page](https://widefix.com) to learn more about our services.
 
-I'm also the sole book author of [Rake Task Management Essentials](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773?_ga=2.19088061.400786981.1668522155-1689462152.1668522155).
-
-I would be glad to help with implementing an IT project of your dream. See my [CV](/files/cv.pdf).
-
-<br />
-
-
-<object width="400" height="500" type="application/pdf" data="/files/cv.pdf?#zoom=85&scrollbar=0&toolbar=0&navpanes=1">
-  See my <a href="/files/cv.pdf">CV</a>
-</object>
+Want to talk? Let's schedule a meeting with me - https://calendly.com/andrei-kaleshka/30min
