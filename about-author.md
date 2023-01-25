@@ -11,4 +11,4 @@ My name is Andrei Kaleshka. I have been working with Ruby/Rails since 2009. I am
 
 I am also the founder of [WideFix](https://widefix.com), a custom software development company that specializes in optimizing and maintaining web apps primarily written in Ruby on Rails. Checkout the company [officail page](https://widefix.com) to learn more about our services.
 
-Want to talk? Let's schedule a meeting with me - https://calendly.com/andrei-kaleshka/30min
+Want to talk? [Schedule](https://calendly.com/andrei-kaleshka/30min) a meeting with me.
