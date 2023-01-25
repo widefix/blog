@@ -4,7 +4,7 @@ title: "Keep DB schema clean and consistent between branches"
 modified: 2022-11-28 00:41:06 +0300
 description: "Learn how to keep DB schema clean and consistent between branches while develop a Rails application"
 tags: [rails, migrations]
-keywords: "rails migrations,db inconsistency,rails development,revert migrations,open-source gem,actual_db_schema,branch switching,reversible migrations,unreversible migrations,automated migration management,development time-saving,rake task,rails debugging,rails application development,github open source"
+keywords: "rails schema,rails migrations,db inconsistency,rails development,revert migrations,open-source gem,actual_db_schema,branch switching,reversible migrations,unreversible migrations,automated migration management,development time-saving,rake task,rails debugging,rails application development,github open source"
 comments: true
 share: true
 image: actual_db_schema.png
@@ -15,7 +15,7 @@ image: actual_db_schema.png
 Switching between branches with migrations run for a Rails application causes the DB inconsistent.
 Eventually, the application starts raising exceptions coming from DB. You start debugging and spend some time on that.
 It turns out that some migrations from not merged branches need rollback.
-Sounds familiar? Keep reading to see a solution that solves this issue once and forever (well, with some caveats).
+Sounds familiar? Keep reading to see a solution that solves this issue once and forever (well, with some caveats). With this solution you will forget about the question how to reset DB schema to previous state in Rails.
 
 ### Problem
 
