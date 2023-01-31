@@ -28,11 +28,9 @@ All of that is correct. Unfortunately, in practice, one might encounter the foll
 
 If you face this issue, the automated option is available. This article includes an example of how **to request Google to reindex a group of URLs** using the **Ruby programming language**.
 
-First, you need to register your project in Google API Console and obtain a json private key file. See these [instructions](https://developers.google.com/search/apis/indexing-api/v3/prereqs){:ref="nofollow" target="_blank"} how to do this.
-
 First, register your project in the Google API Console and obtain a JSON private key file. Follo [these instructions](https://developers.google.com/search/apis/indexing-api/v3/prereqs){:ref="nofollow" target="_blank"} on how to do so.
 
-Next, with the preparation step complete, we move on to the scripting. Let's say we have a list of artists and songs that need to be reindexed. The following Ruby script will schedule their reindex in a bulk request, meaning it will make only one HTTP request instead of multiple.
+Next, with the preparation step complete, we move on to the scripting. Let's say we have a list of artists and songs that need to be reindexed. The following Ruby script will schedule their reindex in a bulk request, meaning it will make only one HTTP request instead of multiple. The script implies  [google-api-ruby-client gem](https://github.com/googleapis/google-api-ruby-client){:ref="nofollow" target="_blank"} installed.
 
 ```ruby
 require 'google/apis/indexing_v3'
