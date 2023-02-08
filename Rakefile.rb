@@ -35,16 +35,15 @@ task :new_post, :title do |t, args|
     post.puts "description: \"Some description goes here.\""
     post.puts "tags: [#{tags}]"
     post.puts "featured_post: false"
-    post.puts "comments: true"
-    post.puts "share: true"
-    post.puts "featured_post: false"
+    post.puts "keywords: \"keyword1, keyword2, keyword3\""
+    post.puts "image:"
     post.puts "---"
   end
 end
 
 # usage rake featured_post
 desc "Set the featured post"
-task :featured_post do |t|  
+task :featured_post do |t|
   title = get_stdin("Enter the whole title of post you want to be featured: ")
   posts = Dir.children(posts_dir)
 
