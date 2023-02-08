@@ -13,7 +13,7 @@ TL;DR: see this [gist](https://gist.github.com/ka8725/95c21119b8fd4883925132ac05
 
 As a Ruby on Rails expert, you may find yourself wondering how to debug a Rails application in production. In some cases, you may need to mimic the current time to check a time-dependent function result.
 
-While there are third-party gems that offer the ability to fake the Time.now functionality, Rails has this built-in functionality as part of the `ActiveSupport::Testing::TimeHelpers` module. However, this module is only intended for use in testing and not in production environments.
+While there are third-party gems that offer the ability to fake `Time.now` functionality, Rails has this built-in functionality as part of the `ActiveSupport::Testing::TimeHelpers` module. However, this module is only intended for use in testing and not in production environments.
 
 ```ruby
 Time.now          # => Wed, 08 Feb 2023 14:01:33 UTC +00:00
