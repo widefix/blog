@@ -16,6 +16,8 @@
   <meta name="twitter:image" content="https:{{ site.url }}/images/post.jpg"/>
 {% endif %}
 
+<link rel="canonical" href="https:{{ site.url }}{{ page.url }}" />
+
 <meta name="twitter:card" content="summary"/>
 
 <!-- Open Graph -->
@@ -23,7 +25,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
 <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-<meta property="og:url" content="{{ page.url }}">
+<meta property="og:url" content="https:{{ site.url }}{{ page.url }}">
 <meta property="og:site_name" content="{{ site.title }}">
 
 {% if site.google_verify %}<meta name="google-site-verification" content="{{ site.google_verify }}">{% endif %}
