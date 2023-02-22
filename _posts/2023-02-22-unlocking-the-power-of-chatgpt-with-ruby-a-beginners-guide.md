@@ -13,7 +13,7 @@ Are you looking to harness the power of artificial intelligence and machine lear
 
 Before you start integrating the ChatGPT API, you need to register for an API key and obtain your credentials from the ChatGPT website. To do that, follow this [page](https://platform.openai.com/account/api-keys){:ref="nofollow" target="_blank"}.
 
-Create the following class in your Ruby On Rails or pure Ruby project:
+Create the following class in your Ruby On Rails or any other Ruby-based project:
 
 ```ruby
 class OpenaiPrompt
@@ -59,22 +59,27 @@ class OpenaiPrompt
 end
 ```
 
-You can define it in some existing file or create a new one, it doesn't matter. But prefer to have a separate file.
-If it's a Rails application, `app/services/openai_prompt.rb` is a good file location for this piece of code.
+You can define your ChatGPT class within an existing file or create a new one specifically for it. However, it is generally recommended to create a separate file for your ChatGPT class for better organization and modularity of your code. This makes it easier to find and modify your ChatGPT code in the future without affecting other parts of your project. If it's a Ruby On Rails application, `app/services/openai_prompt.rb` is a good file location for this piece of code.
 
-This class has the following dependencies (gems) that should be added to your Gemfile:
-- `faraday` - an abstract an handy library to make HTTP calls
-- `dry-initializer` - a library that allows to define the `new` method implicitly without too much repetitive and boring code.
+This class has the following dependencies (gems) that should be added to your `Gemfile`:
+- `faraday` - This is a handy library that provides an abstract interface for making HTTP requests. It simplifies the process of making requests to external APIs and handling responses.
+- `dry-initializer` - This library allows you to define the `new` method implicitly, reducing the amount of repetitive code required. This makes it easier to create new instances of your class without having to manually define instance variables and their default values.
 
-Define the env variable `OPENAI_ACCESS_TOKEN`. The `OPENAI_ORGANIZATION_ID` is optional, it's needed only when you have several organizations registered within ChatGPT.
+To use the `OpenaiPrompt` class, you first need to define the environment variable `OPENAI_ACCESS_TOKEN`. If you have multiple organizations registered within ChatGPT, you can also define the optional `OPENAI_ORGANIZATION_ID` environment variable.
 
-Then you are ready to use it from any line of you project like that: `OpenaiPrompt.new('Why is Ruby awesome programming language?').call`
+Once you have set these environment variables, you can use the `OpenaiPrompt` class from any line of your project by simply calling `OpenaiPrompt.new('Why is Ruby an awesome programming language?').call`.
 
-Here is an example of its usage in a Rails console:
+Here is an example of how you can use the `OpenaiPrompt` class in a Rails console:
 
 ```ruby
 > OpenaiPrompt.new('Why is Ruby awesome programming language?').call
 > # => "\n\nRuby is an awesome programming language because it is easy to learn and use, has a large and supportive community, and is highly flexible and powerful. It is also object-oriented, meaning that it allows developers to create complex applications quickly and easily. Additionally, Ruby is open source, meaning that it is free to use and modify. Finally, Ruby is known for its readability, which makes it easier for developers to understand and debug code."
 ```
+
+ChatGPT offers a wide range of functionalities and models that can be utilized in various ways, not just limited to answering common questions. For instance, you can leverage GPT-3 to generate text for creative writing, content generation, or chatbot responses.
+
+The `OpenaiPrompt` class serves as an example of how you can use ChatGPT to answer common questions programmatically. However, the same principles can be applied to build other classes that utilize ChatGPT's other capabilities.
+
+Furthermore, integrating ChatGPT with a user interface, such as a web form or a chatbot, can allow users to ask questions and get responses in a more intuitive manner. This can be particularly useful for applications that require natural language processing and understanding, such as customer service chatbots or virtual assistants. By integrating ChatGPT with a UI, you can make it more accessible and user-friendly for non-technical users.
 
 If you have questions or need to integrate ChatGPT into your Ruby On Rails or any other Ruby-based project, please [contact](https://widefix.com/).
