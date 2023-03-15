@@ -47,26 +47,26 @@ namespace :my_namespace do
 end
 ```
 
-Now, when you have the starting point, write some code inside the __rake tasks__. This way you save time and start from what matters.
+Now, once you have a starting point, write some code inside the __rake tasks__. This way, you save some time creating the preparation code and can start with what matters.
 
-Let's make sure these __rake tasks__ are really there and can be run:
+Let's confirm that these __rake tasks__ are present and can be executed:
 
 ```shell
 $ rake -T | grep my_namespace
 ```
 
-That command outputs with the following content:
+The command outputs the following content:
 
 ```shell
 rake my_namespace:my_task1  # TODO
 rake my_namespace:my_task2  # TODO
 ```
 
-That print means there are two rake tasks defined `my_task1` and `my_task2` under `my_namespace`. They are ready to use. But they are useless until you write some code there. The TODO(s) signifies that you should describe these tasks.
+The output indicates that there are two rake tasks defined under the namespace `my_namespace`: `my_task1` and `my_task2`. However, they are currently empty and will not do anything until you add code to them. The TODO comments are there to remind you to describe what these tasks do.
 
 ### Conclusion
 
-As you see, it's pretty easy to create your own __rake tasks__. The generator saves some time for you defining the skeleton. You do only what relates to the job - the rake tasks behavior. Thanks for reading and happy coding!
+As you can see, creating your own __rake tasks__ is pretty easy. The generator provides a skeleton for you, saving you time. You only need to focus on the task behavior. Thanks for reading and happy coding!
 
 ### Afterword
 
