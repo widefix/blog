@@ -57,3 +57,11 @@ Let's make sure these __rake tasks__ are exist and we are able to use them:
 	rake my_namespace:my_task2  # TODO
 
 Perfect! As you can see it is very easy to write your own __rake task__. It is easier as you do it before. Thanks for reading!
+
+### Afterword
+
+At [WideFix](https://widefix.com){:ref="nofollow" target="_blank"}, we take pride in our expertise and experience. You can trust that our solutions will not harm your business and will always keep your site running smoothly. You can rely on us to provide confident and effective solutions that meet your needs.
+
+<div style="display: flex;align-items:center;justify-content: center;margin-top: 20px;">
+  <a class="btn" style="background-color: #f04338; cursor: pointer;font-size: 24px;" target="_blank" rel="nofollow" href="https://calendly.com/andrei-kaleshka/30min">Schedule a call</a>
+</div>
