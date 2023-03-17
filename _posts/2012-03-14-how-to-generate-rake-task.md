@@ -69,11 +69,11 @@ As you can see, creating your own __Rake tasks__ is pretty easy. The generator p
 
 ## Learning more about Rake
 
-<a onclick="_gaq.push(['_trackEvent', 'Reference', 'Packt', '#rake-task-management-essentials']);" href="https://www.packtpub.com/product/rake-task-management-essentials/9781783280773?_ga=2.19088061.400786981.1668522155-1689462152.1668522155" target="_blank" ref="nofollow">
+<a href="https://www.packtpub.com/product/rake-task-management-essentials/9781783280773" target="_blank" ref="nofollow">
   <img src="/images/rake_book.jpg" alt="Rake Task Management Essentials" align="right" vspace="5" hspace="5" width="120"/>
 </a>
 
-I've authored a book on the subject of **Rake** called **Rake Task Management Essentials**. If you found the content of this post interesting and would like to learn more about this remarkable tool, I highly recommend purchasing a copy from [here](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773?_ga=2.19088061.400786981.1668522155-1689462152.1668522155){:ref="nofollow" target="_blank"}. I assure you that after reading the book, you will have a thorough understanding of the primary objectives of **Rake** and how to utilize it effectively in your development process, daily tasks, or just for fun. You will also learn how to streamline and optimize your __Rake tasks__. The book covers all of Rake's features with easy-to-follow and practical examples.
+I've authored a book on the subject of **Rake** called **Rake Task Management Essentials**. If you found the content of this post interesting and would like to learn more about this remarkable tool, I highly recommend purchasing a copy from [here](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773){:ref="nofollow" target="_blank"}. I assure you that after reading the book, you will have a thorough understanding of the primary objectives of **Rake** and how to utilize it effectively in your development process, daily tasks, or just for fun. You will also learn how to streamline and optimize your __Rake tasks__. The book covers all of Rake's features with easy-to-follow and practical examples.
 
 ---
 
