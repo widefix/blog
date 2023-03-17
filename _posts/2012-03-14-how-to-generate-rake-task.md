@@ -6,6 +6,7 @@ tags: [ruby, rails, rake]
 share: true
 featured_post: true
 comments: true
+image: rake-task.jpg
 redirect_from:
   - /2012/03/14/how-to-generate-rake-task/
 ---
