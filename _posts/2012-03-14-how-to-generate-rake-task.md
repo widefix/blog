@@ -75,6 +75,8 @@ As you can see, creating your own __Rake tasks__ is pretty easy. The generator p
 
 I've authored a book on the subject of **Rake** called **Rake Task Management Essentials**. If you found the content of this post interesting and would like to learn more about this remarkable tool, I highly recommend purchasing a copy from [here](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773?_ga=2.19088061.400786981.1668522155-1689462152.1668522155){:ref="nofollow" target="_blank"}. I assure you that after reading the book, you will have a thorough understanding of the primary objectives of **Rake** and how to utilize it effectively in your development process, daily tasks, or just for fun. You will also learn how to streamline and optimize your __Rake tasks__. The book covers all of Rake's features with easy-to-follow and practical examples.
 
+---
+
 ## WideFix and Ruby On Rails expertise
 
 At [WideFix](https://widefix.com){:ref="nofollow" target="_blank"}, we take pride in our expertise and experience. You can trust that our solutions will not harm your business and will always keep your site running smoothly. You can rely on us to provide confident and effective solutions that meet your needs.
