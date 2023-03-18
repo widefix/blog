@@ -62,77 +62,87 @@
             {% unless forloop.last %}{% endunless %}
           {% endfor %}
         </span>
-        <hr>
-        <h3 style="margin-bottom: 10px">Read also</h3>
-        <nav>
-          <ul class="post-list">
-            {% if page.previous %}
-              <li class="main-list">
-                <article>
-                  <a href="{{ page.previous.url }}">
-                    {% if page.previous.image %}
-                      <img src="/images/{{ page.previous.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
-                    {% else %}
-                      <img src="/images/post.jpg" alt="WideFix tech post" style="object-fit: cover; height: 200px; width: 100%;" />
-                    {% endif %}
-                    <div class="preview">
-                      <h2>{{ page.previous.title }}</h2>
-                      <p>{{ page.previous.description }}</p>
-                    </div>
-                  </a>
-                  <div class="display-flex">
-                    <div class="entry-tags">
-                      {% for tag in page.previous.tags %}
-                        <div><a href="/tags/#{{ tag }}" title="Pages tagged {{ tag }}">{{ tag }}</a></div>
-                        {% unless forloop.last %}{% endunless %}
-                      {% endfor %}
-                    </div>
-                    <div class="entry-date">
-                      <a href="{{ page.previous.url }}">
-                        <time datetime="{{ page.previous.date | date_to_xmlschema }}">
-                          {{ page.previous.date | date: "%d %b %Y" }}
-                        </time>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </li>
-            {% endif %}
-            {% if page.next %}
-              <li class="main-list">
-                <article>
-                  <a href="{{ page.next.url }}">
-                    {% if page.next.image %}
-                      <img src="/images/{{ page.next.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
-                    {% else %}
-                      <img src="/images/post.jpg" alt="WideFix tech post" style="object-fit: cover; height: 200px; width: 100%;" />
-                    {% endif %}
-                    <div class="preview">
-                      <h2>{{ page.next.title }}</h2>
-                      <p>{{ page.next.description }}</p>
-                    </div>
-                  </a>
-                  <div class="display-flex">
-                    <div class="entry-tags">
-                      {% for tag in page.next.tags %}
-                        <div><a href="/tags/#{{ tag }}" title="Pages tagged {{ tag }}">{{ tag }}</a></div>
-                        {% unless forloop.last %}{% endunless %}
-                      {% endfor %}
-                    </div>
-                    <div class="entry-date">
-                      <a href="{{ page.next.url }}">
-                        <time datetime="{{ page.next.date | date_to_xmlschema }}">
-                          {{ page.next.date | date: "%d %b %Y" }}
-                        </time>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
 
+        <section>
+          <hr>
+          <h2 id="widefix-and-ruby-on-rails-expertise">WideFix and Ruby On Rails expertise</h2>
+          <p>At <a href="https://widefix.com" ref="nofollow" target="_blank">WideFix</a>, we take pride in our expertise and experience. You can trust that our solutions will not harm your business and will always keep your site running smoothly. You can rely on us to provide confident and effective solutions that meet your needs.</p>
+          <div style="display: flex;align-items:center;justify-content: center;margin-top: 20px;">
+            <a class="schedule-button" target="_blank" rel="nofollow" href="https://calendly.com/andrei-kaleshka/30min">Schedule a call</a>
+          </div>
+        </section>
+
+        <section>
+          <h3 style="margin-bottom: 10px">Read also</h3>
+          <nav>
+            <ul class="post-list">
+              {% if page.previous %}
+                <li class="main-list">
+                  <article>
+                    <a href="{{ page.previous.url }}">
+                      {% if page.previous.image %}
+                        <img src="/images/{{ page.previous.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
+                      {% else %}
+                        <img src="/images/post.jpg" alt="WideFix tech post" style="object-fit: cover; height: 200px; width: 100%;" />
+                      {% endif %}
+                      <div class="preview">
+                        <h2>{{ page.previous.title }}</h2>
+                        <p>{{ page.previous.description }}</p>
+                      </div>
+                    </a>
+                    <div class="display-flex">
+                      <div class="entry-tags">
+                        {% for tag in page.previous.tags %}
+                          <div><a href="/tags/#{{ tag }}" title="Pages tagged {{ tag }}">{{ tag }}</a></div>
+                          {% unless forloop.last %}{% endunless %}
+                        {% endfor %}
+                      </div>
+                      <div class="entry-date">
+                        <a href="{{ page.previous.url }}">
+                          <time datetime="{{ page.previous.date | date_to_xmlschema }}">
+                            {{ page.previous.date | date: "%d %b %Y" }}
+                          </time>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+              {% endif %}
+              {% if page.next %}
+                <li class="main-list">
+                  <article>
+                    <a href="{{ page.next.url }}">
+                      {% if page.next.image %}
+                        <img src="/images/{{ page.next.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
+                      {% else %}
+                        <img src="/images/post.jpg" alt="WideFix tech post" style="object-fit: cover; height: 200px; width: 100%;" />
+                      {% endif %}
+                      <div class="preview">
+                        <h2>{{ page.next.title }}</h2>
+                        <p>{{ page.next.description }}</p>
+                      </div>
+                    </a>
+                    <div class="display-flex">
+                      <div class="entry-tags">
+                        {% for tag in page.next.tags %}
+                          <div><a href="/tags/#{{ tag }}" title="Pages tagged {{ tag }}">{{ tag }}</a></div>
+                          {% unless forloop.last %}{% endunless %}
+                        {% endfor %}
+                      </div>
+                      <div class="entry-date">
+                        <a href="{{ page.next.url }}">
+                          <time datetime="{{ page.next.date | date_to_xmlschema }}">
+                            {{ page.next.date | date: "%d %b %Y" }}
+                          </time>
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </section>
       </div><!-- /.entry-content -->
     </div><!-- /.entry-wrapper -->
   </article>

@@ -86,11 +86,3 @@ mailer.mail(from: ENV['SMTP_DEFAULT_FROM'], to: to_email, subject: 'Test from Wi
 Wait a bit and you should receive the email in your inbox.
 
 If you follow these steps correctly, all mailers defined in your Rails application will start using SendGrid for sending emails, and no additional configuration or checks are required.
-
-### Afterword
-
-At [WideFix](https://widefix.com){:ref="nofollow" target="_blank"}, we take pride in our expertise and experience. You can trust that our solutions will not harm your business and will always keep your site running smoothly. You can rely on us to provide confident and effective solutions that meet your needs.
-
-<div style="display: flex;align-items:center;justify-content: center;margin-top: 20px;">
-  <a class="btn" style="background-color: #f04338; cursor: pointer;font-size: 24px;" target="_blank" rel="nofollow" href="https://calendly.com/andrei-kaleshka/30min">Schedule a call</a>
-</div>
