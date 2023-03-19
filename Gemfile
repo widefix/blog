@@ -10,3 +10,8 @@ gem 'activesupport'
 gem 'stringex'
 gem 'jekyll-redirect-from'
 gem 'jekyll-extlinks'
+
+ group :jekyll_plugins do
+   # (other jekyll plugins)
+   gem 'jekyll_picture_tag', '~> 2.0'
+ end
