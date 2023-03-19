@@ -52,7 +52,9 @@
         </div>
         {% assign ref='#headline' %}
         {% if page.image %}
-          <img src="/images/{{ page.image }}" alt="{{page.title}}" style="object-fit: cover; height: 200px; width: 100%;" />
+          {% picture jpt-webp /images/{{ page.image }} --alt {{page.title}} --img style="object-fit: cover; height: 200px; width: 100%;" 16:9 %}
+        {% else %}
+          {% picture jpt-webp /images/post.jpg --alt WideFix tech post --img style="object-fit: cover; height: 200px; width: 100%;" %}
         {% endif %}
         {{ content }}
         {% assign ref='#bottomline' %}
