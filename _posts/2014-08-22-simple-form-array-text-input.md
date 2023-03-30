@@ -2,7 +2,7 @@
 layout: post
 title: "Simple form array text input"
 description: "Use simple_form to generate array of text fields. Add custom input for the PostgreSQL array in Rails."
-tags: [rails, SimpleForm, array, PostgreSQL, text, input]
+tags: [rails, simpleform, array, postgresql, text, input]
 share: true
 comments: true
 ---

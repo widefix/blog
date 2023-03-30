@@ -10,6 +10,7 @@ gem 'activesupport'
 gem 'stringex'
 gem 'jekyll-redirect-from'
 gem 'jekyll-extlinks'
+gem 'jekyll-toc'
 
  group :jekyll_plugins do
    # (other jekyll plugins)

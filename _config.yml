@@ -73,6 +73,7 @@ gems:
   - jekyll-redirect-from
 plugins:
   - jekyll-extlinks
+  - jekyll-toc
 
 extlinks:
   attributes: {rel: nofollow, target: _blank}
