@@ -280,7 +280,7 @@ Comparison:
 
 Performance boost of almost 80 times! The slow-loading page that took over 30 seconds now loads within 300ms. This significant improvement is not the programming language or framework merit.
 
-## Ruby on Rails application demo of faster SQL
+## Demo: Faster SQL in Ruby on Rails App
 
 I have developed a pdemo application using both Ruby and SQL versions](https://blog.widefix.com/importance-sql-for-rails-experts/){:ref="nofollow" target="_blank"} and made it available on GitHub as an open source project. This means that you have the opportunity to experiment with the code and run benchmarks on your own.
 
