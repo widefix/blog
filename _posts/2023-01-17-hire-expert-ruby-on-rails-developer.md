@@ -25,5 +25,3 @@ Lastly, it is important to ensure that the developer has a good understanding of
 
 
 In conclusion, hiring an expert Ruby on Rails developer is a great way to ensure that your web application is built to the highest standards. By considering the factors discussed above, you can find the right developer for your project and take your business to the next level.
-
-You can hire Ruby On Rails developer expert here at [WideFix](https://widefix.com/).
