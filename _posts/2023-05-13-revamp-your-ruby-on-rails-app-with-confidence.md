@@ -19,6 +19,12 @@ In this article, we will share our approach to applying a new design to a Ruby o
 
 ## Why redesigning a Ruby on Rails app
 
+There are several reasons why an app may consider implementing a new UI/UX design. Regardless of the motive, the ultimate goal is always the same - **to increase revenue**. If the app is already in production, any effort put into improving its design should result in higher revenue. If a redesign does not have a positive impact on revenue, it may be seen as an unnecessary expense.
+
+Minimizing expenses is crucial for achieving success. This means that any actions taken to implement a new design should not result in downtime that could lead to losing clients and revenue.
+
+In our case, the client already had mockups drawn. Our task was to turn it into the code and connect it with the existing back-end. Technically, we had to avoid downtimes and reduce development efforts.
+
 ## Different technical approaches of a Ruby on Rails app redesign
 
 ## Risk-free approach of a Ruby on Rails app redesign
