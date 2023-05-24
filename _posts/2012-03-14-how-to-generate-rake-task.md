@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "How to generate Rake task"
+headline: "An easy way to generate Rake task"
 description: "Ruby on Rails guides for generate Rake task. If you want to write new Rake task you can use rails generate task generator. It is Ruby On Rails generator which generates scaffold for the Rake task"
 tags: [ruby, rails, rake]
 share: true
