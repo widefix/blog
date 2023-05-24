@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Choosing Top-Tier Ruby on Rails Consulting"
+headline: "How to choose a Ruby on Rails consulting agency"
 modified: 2023-05-23 13:47:19 +0200
 description: "Discover the essential criteria for choosing a Ruby on Rails development consulting firm to develop your project."
 tags: []
