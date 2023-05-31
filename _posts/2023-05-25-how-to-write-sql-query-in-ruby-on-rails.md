@@ -6,6 +6,7 @@ modified: 2023-05-25 11:49:18 +0200
 description: "Learn how to write SQL in Ruby On Rails applications. Use that to speed up performance and advance knowledge in software architecture."
 tags: [sql, postgresql, rails, rails-development, performance]
 featured_post: false
+toc: true
 image: write-sql-rails.jpg
 ---
 

@@ -31,11 +31,12 @@ task :new_post, :title do |t, args|
     post.puts "---"
     post.puts "layout: post"
     post.puts "title: \"#{title.gsub(/&/,'&amp;')}\""
+    post.puts "headline: \"#{title.gsub(/&/,'&amp;')}\""
     post.puts "modified: #{Time.now.strftime('%Y-%m-%d %H:%M:%S %z')}"
     post.puts "description: \"Some description goes here.\""
     post.puts "tags: [#{tags}]"
     post.puts "featured_post: false"
-    post.puts "keywords: \"keyword1, keyword2, keyword3\""
+    post.puts "toc: true"
     post.puts "image:"
     post.puts "---"
   end
