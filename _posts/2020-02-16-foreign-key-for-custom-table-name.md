@@ -2,22 +2,25 @@
 layout: post
 title: "Rails migration for belongs_to association with custom table name"
 modified: 2020-02-16 00:41:06 +0300
-description: "How to write a Rails migration for a belongs_to association which name does not correspond to the joined table name."
+description: "Write a Rails migration for a belongs_to association with different column name or custom table name."
 tags: [ruby, rails, active_record, migrations]
 comments: true
-share: true
+image: belongs_to_migration.jpg
+toc: true
 ---
 
 **TL;DR:** Provide `to_table` option like that `foreign_key: {to_table: :<table_name>}`.
 
-When it comes to a Rails migration for a `belongs_to` association which name doesn't correspond to the joined table name, it may hard to find out how to do that quickly after reading the Rails documentation or sources. This post should help with that.
+## Generate migration for belongs_to association
 
-Let's start with the following example:
-- there is a `User` model in the system already
-- we need to add `Payment` model
-- `Payment` should belong to a `receiver`, that's `User`.
+It might be not obviuos how to write a Rails migration for a `belongs_to` association that's joined to a not corresponding to the association name. Read this post to see how to do that.
 
-In the code it would look like that:
+Imagine the following scenario:
+- There is a `User` model in the system already.
+- We need to add `Payment` model.
+- `Payment` should belong to a `receiver` (business name), that's `User` (the model).
+
+In the code it looks like that:
 
 ```ruby
 class User < ApplicationRecord
@@ -28,13 +31,13 @@ class Payment < ApplicationRecord
 end
 ```
 
-Let's try to generate a this model and a migration that creates the DB table for it as per the [documentation](https://edgeguides.rubyonrails.org/active_record_migrations.html#model-generators):
+We generate this model using the built in Rails [generator](https://edgeguides.rubyonrails.org/active_record_migrations.html#model-generators){:ref="nofollow" target="_blank"}:
 
 ```shell
 rails g model payment receiver:references
 ```
 
-That produces the following migration:
+It also generates this migration to create the corresponding table in the database:
 
 ```ruby
 class CreatePayments < ActiveRecord::Migration[6.0]
@@ -47,15 +50,19 @@ class CreatePayments < ActiveRecord::Migration[6.0]
 end
 ```
 
-Surprisingly, `rake db:migrate` produces the following error:
+## The generated migration might not work
+
+But `rake db:migrate` run produces the following error:
 
 ```
 PG::UndefinedTable: ERROR:  relation "receivers" does not exist
 ```
 
-And the reason is clear. The migration tries to add a foreign key for a not existing table. It takes the association name `receiver` and supposes, as default, that it points to a table that's plural `receivers`. And there is nothing wrong with that. Except the fact, there is no `receivers` table and `users` table should be used instead.
+From the error message, it's clear that the migration tries to add a foreign key for a not existing table named `receivers`. This name is derived from the `belongs_to` association name provided within the migration `:receiver`. The corresponding table name for it is `receivers`. This is where this name came from. And there is nothing wrong with that because in most cases we have a corresponding table name defined to a `belongs_to` association. But in our case, there is no `receivers` table. We want the `users` table used instead. Also, we want the column name still correspond to the association name that's `receiver_id`.
 
-Unfortunately, after significant time spent on docs reading one may even end up with no solution. It's hard to spot one line in the examples somewhere in the deep of Rails code. Hence, I provide a solution here:
+## Use to_table of foreign_key option
+
+Unfortunately, the official Rails documentation doesn't tell how to write the migration for this scenario (later, I improved it in this [PR](https://github.com/rails/rails/pull/38469){:ref="nofollow" target="_blank"}). I checked Rails code and found a solution there. Just specify the option `foreign_key: {to_table: :users}` as below:
 
 ```ruby
 class CreatePayments < ActiveRecord::Migration[6.0]
@@ -68,10 +75,13 @@ class CreatePayments < ActiveRecord::Migration[6.0]
 end
 ```
 
-And now the migration runs without any failures and produces a correct result that's the created `payments` table with the `receiver_id` column and a foreign key points to the joined `users` table.
+Now the migration runs without failures and produces the desired result. It creates the `payments` table with the `receiver_id` column and the foreign key points to the joined `users` table.
 
-So, the solution is to use `foreign_key: {to_table: :users}` for that example above.
+## Afterwards
 
-I kindly ask you to participate in the docs improvement. Just vote for this [PR](https://github.com/rails/rails/pull/38469). Thank you!
+To summarize, for a custom joined table or column name (that's the same scenario) of `belongs_to` migration use `foreign_key: {to_table: :users}` like in the example above.
 
-UPDATE 02/20/2020: The PR got merged, what means the documentation got improved!
+Based on this investigation, I created this [PR](https://github.com/rails/rails/pull/38469){:ref="nofollow" target="_blank"} to improve the documentation.
+
+Thanks to everyone who supported it and made this merge so fast!
+
