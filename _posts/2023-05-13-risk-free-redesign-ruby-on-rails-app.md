@@ -98,4 +98,6 @@ I've been working on this project with several people in different periods of ti
 - Daniel Dauwe
 - Vadzim Jakushau
 - Illia Pruskyi
+- Soltan Yangibayev
+- Svetlana Zhuravitskaya
 - Alexey Mikitsik
