@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cheaper and Risk-Free Ruby on Rails App Redesign"
-modified: 2023-05-13 15:06:43 +0200
+modified: 2023-08-30 15:06:43 +0200
 description: "Learn how to apply new design to a Ruby on Rails app without risks to your business and do that cheaper.."
 tags: [rails-development]
 featured_post: false
