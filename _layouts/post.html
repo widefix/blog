@@ -12,9 +12,9 @@
       "headline": "{{ page.title }}",
       "image": [
         {% if page.image %}
-          "{{ site.url }}/images/{{ page.image }}"
+          "https:{{ site.url }}/images/{{ page.image }}"
          {% else %}
-           "{{ site.url }}/images/post.jpg"
+           "https:{{ site.url }}/images/post.jpg"
          {% endif %}
       ],
       "datePublished": "{{ page.date }}",
