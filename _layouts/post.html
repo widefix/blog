@@ -4,7 +4,28 @@
 <!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
-{% include head.html %}
+  {% include head.html %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "{{ page.title }}",
+      "image": [
+        {% if page.image %}
+          "{{ site.url }}/images/{{ page.image }}"
+         {% else %}
+           "{{ site.url }}/images/post.jpg"
+         {% endif %}
+      ],
+      "datePublished": "{{ page.date }}",
+      "dateModified": {% if page.modified %}"{{ page.modified }}"{% else %}"{{ page.date }}"{% endif %},
+      "author": [{
+          "@type": "Person",
+          "name": "Andrei Kaleshka",
+          "url": "https://www.linkedin.com/in/ka8725/"
+        }]
+    }
+    </script>
 </head>
 
 <body id="post">
