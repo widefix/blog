@@ -7,8 +7,9 @@ keywords:
 ---
 
 <img src="/images/my_face.jpg" alt="Andrei Kaleshka (Andrey Koleshko)" align="left" vspace="5" hspace="5" width="100"/>
-My name is Andrei Kaleshka (Andrey Koleshko). I have been working with Ruby/Rails since 2009. I am passionate about clean software architecture, code performance, readability, simplicity, and maintainability. This allows me to build applications with minimal cost but maximum results. I am the sole author of the book [Rake Task Management Essentials](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773).
 
-I am also the founder of [WideFix](https://widefix.com), a custom software development company that specializes in optimizing and maintaining web apps primarily written in Ruby on Rails. Checkout the company [officail page](https://widefix.com) to learn more about our services.
+I'm Andrei Kaleshka, a Ruby/Rails developer working with the technology since 2009. I'm passionate about building clean, maintainable, and performant applications that deliver real results for my clients. See my [GitHub account](https://github.com/ka8725). I'm also the author of the book [Rake Task Management Essentials](https://www.packtpub.com/product/rake-task-management-essentials/9781783280773) published by Packt.
 
-Want to talk? [Schedule](https://calendly.com/andrei-kaleshka/30min) a meeting with me.
+With my extensive Ruby on Rails experience, I can confidently assist you in developing exceptional web applications that exceed your expectations. My dedication to delivering high-quality results ensures your complete satisfaction.
+
+Want to talk about how we can help you? [Schedule](https://calendly.com/andrei-kaleshka/30min) a meeting with me today!
