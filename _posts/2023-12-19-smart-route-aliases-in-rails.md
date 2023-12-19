@@ -3,7 +3,7 @@ layout: post
 title: "Smart route aliases in Rails"
 headline: "Smart routes aliases in Rails"
 modified: 2023-12-19 18:00:50 +0100
-description: "Learn how to define smart aliases in Rails router."
+description: "Empower your marketing sites, landing pages, and any other web presence with intelligent URL redirection."
 tags: [rails, rails-development]
 featured_post: false
 image: route-66.jpg
