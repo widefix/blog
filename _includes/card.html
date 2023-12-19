@@ -1,9 +1,9 @@
 <article>
     <a href="{{ post.url }}">
       {% if post.image %}
-        {% picture jpt-webp /images/{{post.image}} --alt {{page.title}} --img style="object-fit: cover; height: 200px; width: 100%;" 16:9 %}
+        {% picture /images/{{post.image}} --alt {{page.title}} --img style="object-fit: cover; height: 200px; width: 100%;" 16:9 %}
       {% else %}
-        {% picture jpt-webp /images/post.jpg --alt {{page.title}} --img style="object-fit: cover; height: 200px; width: 100%;" 16:9 %}
+        {% picture /images/post.jpg --alt {{page.title}} --img style="object-fit: cover; height: 200px; width: 100%;" 16:9 %}
       {% endif %}
       <div class="preview">
         <h2>{{ post.title }}</h2>
