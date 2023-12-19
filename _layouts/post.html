@@ -78,9 +78,9 @@
         </div>
         {% assign ref='#headline' %}
         {% if page.toc %}
-          {{ content | toc }}
+          {{ content | toc | extlinks }}
         {% else %}
-          {{ content }}
+          {{ content | extlinks }}
         {% endif %}
         {% assign ref='#bottomline' %}
         <span class="entry-tags">
