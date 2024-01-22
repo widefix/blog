@@ -2,7 +2,7 @@
 layout: post
 title: "How to generate Rake task"
 headline: "Easy way to create your own Rake task"
-description: "Learn how to create your own Rake tasks efficiently using the built-in generator inside Ruby On Rails."
+description: "Create your own rake task from scratch in a Rails app with these easy steps."
 tags: [ruby, rails, rake]
 share: true
 featured_post: true
