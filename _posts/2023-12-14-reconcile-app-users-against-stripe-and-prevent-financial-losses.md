@@ -272,40 +272,70 @@ We chose that time as the servers are less loaded during those hours.
 
 ## Analyze Stripe data discrepancies with SQL
 
-We are all set. With the data in place, we can use SQL to identify all deviations. This will involve using common table expression, views, joins, filters, and aggregation functions.
+We are all set. With the data in place, we can use SQL to identify all deviations. This will involve using common table expression (CTE), views, joins, filters, and aggregation functions.
 
 Note that the script fetches the Stripe data once a week, and it takes around 1 hour to run. Consequently, the app data will always be ahead of the Stripe data. This is crucial to understand because we cannot join the current app data against the cached Stripe data due to this time lag. Therefore, we need the app data snapshot at the moment the script was run.
 
 Creating a real data snapshot is an option, but it would significantly complicate our architectural story. Fortunately, we have Papertrail configured in the app, a gem that stores all changes to users. This means we can reinstall actual data at the moment the script fetched Stripe data was run. The only field of interest for us is `plan_id`. Therefore, we reinstall only this field. To reuse the reinstalled data, we utilize views. These are kind of virtual tables inside SQL but don't store the collected data:
 
 ```sql
-create view stripe.users_with_actual_plan as (with stripe_update as (
-    select created_at as ts from stripe.subscriptions limit 1
- ),
- recent_versions as (
-     select * from versions where created_at >= (select ts from stripe_update)
-),
-data as (
-    select
-         u.*,
-         coalesce (
-             coalesce(
-                 coalesce(
-                     (substring((vp.object_changes->>'plan_id') from ', (\d+)'))::int,
-                     (substring(vp.object from '\nplan_id: (\d+)'))::int
-                 ),
-                 coalesce(
-                     (substring((vf.object_changes->>'plan_id') from '(\d+),'))::int,
-                     (substring(vf.object from '\nplan_id: (\d+)'))::int
-                 )
-             ),
-             u.plan_id
-         ) as actual_plan_id,
-         rank() over (partition by u.id order by vp.created_at desc nulls last, vf.created_at asc) as version_rank
-     from users u
-     left join recent_versions vp on vp.item_id = u.id and vp.created_at < (select ts from stripe_update)
-     left join recent_versions vf on vf.item_id = u.id and vf.created_at >= (select ts from stripe_update)
- ) select * from data where version_rank = 1);
+create view stripe.users_with_actual_plan as (
+    with stripe_update as (
+        select created_at as ts from stripe.subscriptions limit 1
+    ),
+    recent_versions as (
+        select * from versions where created_at >= (select ts from stripe_update)
+    ),
+    data as (
+        select
+            u.*,
+            coalesce (
+                coalesce(
+                    coalesce(
+                        (substring((vp.object_changes->>'plan_id') from ', (\d+)'))::int,
+                        (substring(vp.object from '\nplan_id: (\d+)'))::int
+                    ),
+                    coalesce(
+                        (substring((vf.object_changes->>'plan_id') from '(\d+),'))::int,
+                        (substring(vf.object from '\nplan_id: (\d+)'))::int
+                    )
+                ),
+                u.plan_id
+            ) as actual_plan_id,
+            rank() over (partition by u.id order by vp.created_at desc nulls last, vf.created_at asc) as version_rank
+        from users u
+        left join stripe.customers c on c.stripe_id = u.stripe_customer_id
+        left join recent_versions vp on vp.item_id = u.id and vp.created_at < coalesce(c.created_at, (select ts from stripe_update))
+        left join recent_versions vf on vf.item_id = u.id and vf.created_at >= coalesce(c.created_at, (select ts from stripe_update))
+    ) select * from data where version_rank = 1
+);
  ```
 
 This SQL query might look intimidating, and that's okay. It's not essential for understanding everything here. All you need to know is what it does, and you already have that knowledge. It creates a virtual table of users with the actual `plan_id` that was set just before the script fetched Stripe data.
+
+> One might ask, "How do we end up creating SQL queries that appear so complicated and intimidating?" The answer is simple: through small steps, selecting one field at a time, joining step by step, and eventually combining them into a single query using the CTE construction.
+
+And now, we are ready to join these users with the actual plan data from Stripe.
+
+This time, the SQL looks much easier:
+
+```sql
+with stripe_update as (
+    select created_at ts from stripe.subscriptions limit 1
+)
+select u.* from
+stripe.users_with_actual_plan u
+left join stripe.subscriptions s on s.stripe_customer_id = u.stripe_customer_id
+where u.actual_plan_id is not null and u.actual_plan_id not in (6, 121)
+    and u.created_at < (select ts from stripe_update)
+    and s.id is null
+;
+```
+
+The plan with ID = 6 is the free plan, and 121 is a technical one used only for internal purposes. Therefore, the entire expression `u.actual_plan_id is not null and u.actual_plan_id not in (6, 121)` indicates that the user is on a paid plan.
+
+We inputted this SQL into Metabase, and this is what it looks like:
+
+![SQL inside Metabase](/images/reported-users.png)
+
+Now, we are ready to configure notifications even when a new record is added to these results. See the bell icon at the bottom right; it's intended for this purpose.
