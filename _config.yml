@@ -77,7 +77,7 @@ plugins:
 
 extlinks:
   attributes: {rel: nofollow, target: _blank}
-  rel_exclude: ['widefix.com']
+  rel_exclude: ['widefix.com', 'blog.widefix.com']
 
 include: [".htaccess"]
 exclude: ["lib", "config.rb", "Gemfile", "Capfile", "README.md", "LICENSE", "Gemfile.lock", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]

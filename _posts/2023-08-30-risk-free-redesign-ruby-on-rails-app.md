@@ -26,6 +26,8 @@ This article shares the approach we took to apply the new design in one of our p
 - Implementing traffic control and advanced caching.
 - Making SEO optimization easier.
 
+{% include seeking_dev_help_magnete.html %}
+
 ## Why redesigning a Ruby on Rails app
 
 There are several reasons why an app may consider implementing a new UI/UX design. Regardless of the motive, the ultimate goal is always the same - **to increase revenue**. Note, that keeping users using the app and not going away is the same goal.  Due to an old and unhandy design, an app can make the customers leave. In this case, redesign also can help. If it's clear that a redesign won't have a positive impact on revenue, it may be an unnecessary expense. Redesigning is usually an expensive change. So learn from the users if the design is a problem before making this decision.
@@ -68,6 +70,8 @@ Switching to the new design made the project more attractive to users, resulting
 
 The release date was on the 1st of February 2021.
 
+{% include seeking_dev_help_magnete.html %}
+
 ## Why our approach of Ruby on Rails app redesign is cheaper and less risky
 
 Redesigning apps can be painful and distracting. The Rails assets pipeline changes often, making sticking with it turn the code into legacy quickly. Finding specialists to maintain this code without sacrificing quality on both front-end and back-end is challenging. Separating the front-end and leaving only the Rails back-end for the API makes redesigning and maintenance smoother, allowing for a diversified team with good specialists on both ends.
@@ -86,3 +90,7 @@ I'm grateful and proud to have worked with the following people on this project 
 - Soltan Yangibayev
 - Svetlana Zhuravitskaya
 - Alexey Mikitsik
+
+<small class="side-note">
+When seeking proficient expertise in Ruby on Rails development, explore the option of using a reputable talent marketplace. Toptal provides access to dependable [Ruby on Rails developers](https://www.toptal.com/ruby-on-rails) for hire, assisting companies with their critical web application requirements.
+</small>
