@@ -96,65 +96,39 @@ We have a special folder in the app, `app/scripts`, where we put this kind of ad
 And this is the script we've come up with:
 
 ```ruby
-next_page = nil
-
-stripe_customers = {}
-
-start = "1 Jan 2015".to_datetime.to_i
+starting_after = nil
 
 loop do
-  params = {query: "created>#{start}", expand: ['data.subscriptions'], limit: 100}
-  params[:page] = next_page if next_page
+  params = {expand: ['data.subscriptions'], limit: 100}
+  params[:starting_after] = starting_after if starting_after
 
-  customers = Stripe::Customer.search(params)
-  next_page = customers.next_page
+  customers = Stripe::Customer.list(params)
 
   customers.each do |cus|
-    stripe_customers[cus.email] ||= []
-    customer_subscriptions = []
-    cus.subscriptions.each { |sub|
-      hash = {
-        subscription_id: sub['id'],
-        plan_id: sub['plan']['id'],
-        status: sub['status']
-      }
-      customer_subscriptions << hash
-    }
+    ApplicationRecord.transaction do
+      StripeCustomer.create(
+        email: cus["email"],
+        stripe_id: cus["id"],
+        description: cus["description"],
+        created_in_stripe: cus["created"] ? Time.zone.at(cus["created"]) : nil,
+        metadata: cus["metadata"],
+        subscriptions: customer_subscriptions,
+        deleted: cus["deleted"]
+      )
 
-    stripe_hash = {
-      customer_id: cus['id'],
-      description: cus['description'],
-      created_at: Time.at(cus['created'] || 0),
-      metadata: cus['metadata'],
-      subscriptions: customer_subscriptions,
-      deleted: false
-    }
-    stripe_hash[:deleted] = true if cus["deleted"]
-    stripe_customers[cus.email] << stripe_hash
+      cus.subscriptions.each do |sub|
+        StripeSubscription.create(
+          stripe_customer_id: cus["id"],
+          stripe_id: sub["id"],
+          plan_id: sub["plan"]["id"],
+          status: sub["status"]
+        )
+      end
+    end
+
+    starting_after = cus["id"]
   end
   break if customers.count < 100
-end
-
-stripe_customers.each do |key, value|
-  value.each do |v|
-    StripeCustomer.create(
-      email: key,
-      stripe_id: v[:customer_id],
-      created_in_stripe: v[:created_at],
-      description: v[:description],
-      deleted: v[:deleted],
-      metadata: v[:metadata]
-    )
-
-    v[:subscriptions].each do |sub|
-      StripeSubscription.create(
-        stripe_id: sub[:subscription_id],
-        stripe_customer_id: v[:customer_id],
-        plan_id: sub[:plan_id],
-        status: sub[:status]
-      )
-    end
-  end
 end
 ```
 
@@ -178,76 +152,45 @@ class UpdateStripeData
 
   def perform
     drop_old_data
-
     record_stripe_data
   end
 
   private
 
-  def stripe_customers_data
-    next_page = nil
-
-    stripe_customers = {}
-
-    start = "1 Jan 2015".to_datetime.to_i
+  def record_stripe_data
+    starting_after = nil
 
     loop do
-      params = {query: "created>#{start}", expand: ['data.subscriptions'], limit: 100}
-      params[:page] = next_page if next_page
+      params = {expand: ['data.subscriptions'], limit: 100}
+      params[:starting_after] = starting_after if starting_after
 
-      customers = Stripe::Customer.search(params)
-      next_page = customers.next_page
+      customers = Stripe::Customer.list(params)
 
       customers.each do |cus|
-        stripe_customers[cus.email] ||= []
-        customer_subscriptions = []
-        cus.subscriptions.each { |sub|
-          hash = {
-            subscription_id: sub['id'],
-            plan_id: sub['plan']['id'],
-            status: sub['status']
-          }
-          customer_subscriptions << hash
-        }
+        ApplicationRecord.transaction do
+          StripeCustomer.create(
+            email: cus["email"],
+            stripe_id: cus["id"],
+            description: cus["description"],
+            created_in_stripe: cus["created"] ? Time.zone.at(cus["created"]) : nil,
+            metadata: cus["metadata"],
+            subscriptions: customer_subscriptions,
+            deleted: cus["deleted"]
+          )
 
-        stripe_hash = {
-          customer_id: cus['id'],
-          description: cus['description'],
-          created_at: Time.at(cus['created'] || 0),
-          metadata: cus['metadata'],
-          subscriptions: customer_subscriptions,
-          deleted: false
-        }
-        stripe_hash[:deleted] = true if cus["deleted"]
-        stripe_customers[cus.email] << stripe_hash
+          cus.subscriptions.each do |sub|
+            StripeSubscription.create(
+              stripe_customer_id: cus["id"],
+              stripe_id: sub["id"],
+              plan_id: sub["plan"]["id"],
+              status: sub["status"]
+            )
+          end
+        end
+
+        starting_after = cus["id"]
       end
       break if customers.count < 100
-    end
-
-    stripe_customers
-  end
-
-  def record_stripe_data
-    stripe_customers_data.each do |key, value|
-      value.each do |v|
-        StripeCustomer.create(
-          email: key,
-          stripe_id: v[:customer_id],
-          created_in_stripe: v[:created_at],
-          description: v[:description],
-          deleted: v[:deleted],
-          metadata: v[:metadata]
-        )
-
-        v[:subscriptions].each do |sub|
-          StripeSubscription.create(
-            stripe_id: sub[:subscription_id],
-            stripe_customer_id: v[:customer_id],
-            plan_id: sub[:plan_id],
-            status: sub[:status]
-          )
-        end
-      end
     end
   end
 
@@ -285,7 +228,7 @@ create view stripe.users_with_actual_plan as (
         select created_at as ts from stripe.subscriptions limit 1
     ),
     recent_versions as (
-        select * from versions where created_at >= (select ts from stripe_update)
+        select * from versions where created_at >= (select ts - interval '1 day' from stripe_update)
     ),
     data as (
         select
@@ -339,4 +282,6 @@ We inputted this SQL into Metabase, and this is what it looks like:
 
 ![SQL inside Metabase](/images/reported-users.png)
 
-Now, we are ready to configure notifications even when a new record is added to these results. See the bell icon at the bottom right; it's intended for this purpose.
+> Optionally, we can configure notifications to be sent even when a new record is added to these results. See the bell icon at the bottom right; it's intended for this purpose.
+
+As we can see, there were 983 instances of user data discrepancies found. It's a significant amount of data.
