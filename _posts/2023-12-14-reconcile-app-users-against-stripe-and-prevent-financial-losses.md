@@ -24,6 +24,8 @@ For example, a customer may have a premium status within the app, while Stripe s
 
 This blog post outlines the approach we took to resolve such issues in our app, which had around 80k users, with 10% on the premium plan. We identified instances of both overpayment and underpayment, which could be attributed to manual data manipulation in Stripe, missing webhooks, or bugs in our system.
 
+{% include seeking_dev_help_magnete.html %}
+
 ## The plan to reconciliate data with Stripe
 
 While we used Ruby for scripting, this solution is universal and can be applied to applications written in other languages like Python, Node.js, Java, Rust, and Go.
@@ -90,6 +92,8 @@ end
 ```
 
 We have a special folder in the app, `app/scripts`, where we put this kind of ad-hoc code. Later, we use Rails runner to execute them on the production server against the real data. They can also be run locally for testing purposes during script development. This script code was put into `app/scripts/stripe_classes.rb` file.
+
+{% include seeking_dev_help_magnete.html %}
 
 ## The Stripe data scrapper
 
@@ -214,6 +218,8 @@ production:
 
 We chose that time as the servers are less loaded during those hours.
 
+{% include seeking_dev_help_magnete.html %}
+
 ## Analyze Stripe data discrepancies with SQL
 
 We are all set. With the data in place, we can use SQL to identify all deviations. This will involve using common table expression (CTE), views, joins, filters, and aggregation functions.
@@ -284,4 +290,53 @@ We inputted this SQL into Metabase, and this is what it looks like:
 
 > Optionally, we can configure notifications to be sent even when a new record is added to these results. See the bell icon at the bottom right; it's intended for this purpose.
 
-As we can see, there were 983 instances of user data discrepancies found. It's a significant amount of data.
+Metabase comes in handy for exporting data into CSV and Excel with just one click. We do that often. That simplifies communication with the business a lot. It's also possible to share the reports right away with the team via a direct link.
+
+As we can see, there were 983 instances of user data discrepancies found. It's a significant amount of data among all active subscriptions that match the app user data, which is 8,488. That represents roughly a 10% margin of error! Too much!
+
+We found the number of subscriptions that match user data using this SQL:
+
+```sql
+with stripe_update as (
+    select created_at ts from stripe.subscriptions limit 1
+)
+select count(u.*) from stripe.users_with_actual_plan u
+    join stripe.subscriptions s on s.stripe_customer_id = u.stripe_customer_id
+    join plans p on p.stripe_price_id = s.plan_id
+    where u.created_at < (select ts from stripe_update)
+;
+```
+
+> See how the created view "users_with_actual_plan" becomes handy here as well. It's a very powerful tool that can save a ton of code and coding time!
+
+Further data analysis shows that 514 of these 983 discrepancies are related to deleted users. It turns out our app employs a so-called soft delete feature, meaning they are not actually deleted but marked as such, preventing them from using the app anymore. Well, now the situation looks much better. It's just a 5% margin of error, not the 10% we initially thought. It's almost within 3% of the standard deviation. Not so bad.
+
+{% include seeking_dev_help_magnete.html %}
+
+## Fixing the data deviations between the app and Stripe
+
+All actions related to fixing data require a thorough understanding of the app at a good level. We can either examine the instances of discrepancies one by one, allowing us to understand what happened to each of them. When we analyze each instance of discrepancy, we check the app database, logs, Papertrail records, Stripe logs, Rollbar, and any other data sources that could help us determine what happened to a certain user.
+
+By simply looking into the app database, we noticed those 514 softly deleted users. This can be easily done by examining the `deleted_at` column in the report. Any Excel-like tool can allow us to filter this information, or we can accomplish this in Metabase.
+
+![Filter by non-null deleted_at column in Metabase](/images/metabase-filter-by-deleted-at.png)
+
+We can move these users to free plan right away by writing a Ruby script that was successfully done.
+
+Now, there are only 469 records with data discrepancies remaining. Randomly going through some of them shows that all of them indeed have data discrepancies. Simultaneously, by delving into the codebase with certain hypotheses about what happened, we identify a serious breach inside the app. The issue stems from the fact that the app uses Sidekiq, which doesn't guarantee the order of incoming webhook processing. Each webhook has its own handler with specific code manipulating user subscription plans, all processed by Sidekiq.
+
+At this point, we decide to address this issue by making slight adjustments to the architecture. From now on, all webhooks will be processed by one handler that consistently checks the actual Stripe subscription state before changing the user's plan within the app. Hence, the multiple webhooks that used to process subscription-related actions will now utilize only one blocking handler, ensuring it cannot run in parallel for several requests for one user.
+
+The specific code for this solution is too app-specific and will be omitted in this post. It's also a topic for another post.
+
+After fixing the bug and discussing it with the business owner, we decide to move all users who have not used the app in the last 30 days to the free plan and issue additional invoices for the underpayment for the others. This time, the changes will be made in closer collaboration with the business owner. First, we are going to calculate the underpayments for each user and generate a report. Then, each instance will be reviewed, approved, and fixed through a Ruby ad-hoc script. This is still an ongoing process, but we see the finish line.
+
+After fixing the bug, we have noticed new occurrences of data deviation. No users have reported new instances, and our customer success team is also satisfied. These are our results, and we are pleased with the work done.
+
+{% include seeking_dev_help_magnete.html %}
+
+## Conclusion
+
+Asynchronous communication between services is a painful point. It can lead to customer dissatisfaction, losses to the business, and increased workload for the customer support team. This post shows how we deal with these kinds of issues. Efficiently solving them requires deep expertise in SQL, the business, tech stack, data analysis, and scripting.
+
+Happy coding and bug-free apps to you, our reader!
