@@ -12,4 +12,4 @@ I'm Andrei Kaleshka, a Ruby/Rails developer working with the technology since 20
 
 With my extensive Ruby on Rails experience, I can confidently assist you in developing exceptional web applications that exceed your expectations. My dedication to delivering high-quality results ensures your complete satisfaction.
 
-Want to talk about how we can help you? [Schedule](https://calendly.com/andrei-kaleshka/30min){:ref="nofollow" target="_blank"} a meeting with me today!
+{% include seeking_dev_help_magnete.html %}
