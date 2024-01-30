@@ -2,7 +2,7 @@
 title: Reconcile app users vs Stripe and prevent financial losses
 layout: post
 headline: How we reconciled app users with Stripe and prevented financial losses
-modified: '2023-12-14 18:23:20 +0100'
+modified: '2023-01-30 18:23:20 +0100'
 description: Read the story of how we managed to prevent financial losses within an app for one of our clients.
 tags:
 - stripe
