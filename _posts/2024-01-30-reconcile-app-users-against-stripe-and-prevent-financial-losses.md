@@ -329,11 +329,11 @@ At this point, we decide to address this issue by making slight adjustments to t
 
 The specific code for this solution is too app-specific and will be omitted in this post. It's also a topic for another post.
 
+{% include seeking_dev_help_magnete.html %}
+
 After fixing the bug and discussing it with the business owner, we decide to move all users who have not used the app in the last 30 days to the free plan and issue additional invoices for the underpayment for the others. This time, the changes will be made in closer collaboration with the business owner. First, we are going to calculate the underpayments for each user and generate a report. Then, each instance will be reviewed, approved, and fixed through a Ruby ad-hoc script. This is still an ongoing process, but we see the finish line.
 
 After fixing the bug, we have noticed new occurrences of data deviation. No users have reported new instances, and our customer success team is also satisfied. These are our results, and we are pleased with the work done.
-
-{% include seeking_dev_help_magnete.html %}
 
 ## Conclusion
 
