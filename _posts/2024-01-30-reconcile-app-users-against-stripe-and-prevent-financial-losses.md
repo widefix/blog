@@ -319,7 +319,7 @@ All actions related to fixing data require a thorough understanding of the app a
 
 By simply looking into the app database, we noticed those 514 softly deleted users. This can be easily done by examining the `deleted_at` column in the report. Any Excel-like tool can allow us to filter this information, or we can accomplish this in Metabase.
 
-![Filter by non-null deleted_at column in Metabase](/images/metabase-filter-by-deleted-at.png)
+![Filter by non-null deleted_at column in Metabase](/images/metabase-filters.png)
 
 We can move these users to free plan right away by writing a Ruby script that was successfully done.
 
