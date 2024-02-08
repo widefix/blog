@@ -26,7 +26,7 @@ This blog post outlines the approach we took to resolve such issues in our app, 
 
 {% include seeking_dev_help_magnete.html %}
 
-## The plan to reconciliate data with Stripe
+## The plan to reconcile data with Stripe
 
 While we used Ruby for scripting, this solution is universal and can be applied to applications written in other languages like Python, Node.js, Java, Rust, and Go.
 
