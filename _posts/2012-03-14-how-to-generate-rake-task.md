@@ -12,6 +12,8 @@ redirect_from:
   - /2012/03/14/how-to-generate-rake-task/
 ---
 
+TL;DR: use rails generator `rails g task my_namespace my_task1 my_task2`.
+
 Some time ago I found a generator in __Ruby on Rails__'s sources to create a __Rake task__. There were no information about it anywhere. As a result, I decided to share my findings. This post will show you a simple and efficient method for generating them.
 
 ## Several ways to create Rake tasks
