@@ -353,7 +353,7 @@ After fixing the bug, we transferred all users who had not used the app in the l
 - 30 users got moved to the free plan;
 - For the rest 48, we tried to reactivate the subscription. 19 of which got successfully reactivated. 5 of them, could not have created the subscription due to a missing payment method. 24 of them created subscriptions but with the payment failing, they will be moved to the free plan after 3 failed attempts, or remain active if paid.
 
-That resulted in roughly a $525 increase in Monthly Recurring Revenue (MRR).
+That resulted in roughly a $525 immediate increase in Monthly Recurring Revenue (MRR) and 600$ in potential MRR increase if all the users with failed payments will be reactivated.
 
 ## Preventing future discrepancies
 
