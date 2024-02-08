@@ -323,20 +323,44 @@ By simply looking into the app database, we noticed those 514 softly deleted use
 
 We can move these users to free plan right away by writing a Ruby script that was successfully done.
 
-Now, there are only 469 records with data discrepancies remaining. Randomly going through some of them shows that all of them indeed have data discrepancies. Simultaneously, by delving into the codebase with certain hypotheses about what happened, we identify a serious breach inside the app. The issue stems from the fact that the app uses Sidekiq, which doesn't guarantee the order of incoming webhook processing. Each webhook has its own handler with specific code manipulating user subscription plans, all processed by Sidekiq.
+Now, there are only 469 records with data discrepancies remaining. We go through some of them. That shows that all of them indeed had data discrepancies. Delving into the codebase with some hypotheses about what happened, we spot a serious breach inside the app. Each Stripe webhook has its own handler with specific code manipulating the user subscription data. All processed by Sidekiq. But Sidekiq doesn't guarantee the order of incoming webhook processing.
 
 At this point, we decide to address this issue by making slight adjustments to the architecture. From now on, all webhooks will be processed by one handler that consistently checks the actual Stripe subscription state before changing the user's plan within the app. Hence, the multiple webhooks that used to process subscription-related actions will now utilize only one blocking handler, ensuring it cannot run in parallel for several requests for one user.
 
-The specific code for this solution is too app-specific and will be omitted in this post. It's also a topic for another post.
+This is the simplicied version of the code we used to fix the bug:
+
+```ruby
+def sync_app_subscription
+  PlanChangeSchedule.transaction do
+    # Prevent concurrent plan updates; if another job attempts to acquire the lock simultaneously, it will wait until this one is completed
+    PlanChangeSchedule.where(user: user).lock
+    if actual_subscription && stripe_plan != user.plan
+      synchronize!
+    elsif !actual_subscription
+      cancel_account
+    end
+  end
+ensure
+  PlanChangeSchedule.where(user: user).delete_all
+end
+```
+
+`PlanChangeSchedule` is a special table that stores the user's plan change requests. It's used to prevent concurrent plan updates. The `lock` method is used to prevent concurrent plan updates. If another job attempts to acquire the lock simultaneously, it will wait until this one is completed. The `synchronize!` method is used to synchronize the user's plan with the actual Stripe subscription. The `cancel_account` method is used to cancel the user's account if there is no actual subscription.
 
 {% include seeking_dev_help_magnete.html %}
 
-After fixing the bug and discussing it with the business owner, we decide to move all users who have not used the app in the last 30 days to the free plan and issue additional invoices for the underpayment for the others. This time, the changes will be made in closer collaboration with the business owner. First, we are going to calculate the underpayments for each user and generate a report. Then, each instance will be reviewed, approved, and fixed through a Ruby ad-hoc script. This is still an ongoing process, but we see the finish line.
+After fixing the bug, we transferred all users who had not used the app in the last 90 days to the free plan. There were 391 such accounts. The remaining users got moved to the paid subscription. In the end, the result looked like that:
+- 30 users got moved to the free plan;
+- For the rest 48, we tried to reactivate the subscription. 19 of which got successfully reactivated. 5 of them, could not have created the subscription due to a missing payment method. 24 of them created subscriptions but with the payment failing, they will be moved to the free plan after 3 failed attempts, or remain active if paid.
 
-After fixing the bug, we have noticed new occurrences of data deviation. No users have reported new instances, and our customer success team is also satisfied. These are our results, and we are pleased with the work done.
+That resulted in roughly a $525 increase in Monthly Recurring Revenue (MRR).
+
+## Preventing future discrepancies
+
+To prevent future discrepancies, we set up a monitoring system that checks for new discrepancies every week. We use Metabase for this purpose. We set up a dashboard that shows the number of discrepancies. We also set up alerts that notify us when the number of discrepancies exceeds a certain threshold. All of that was done using Metabase and SQL.
 
 ## Conclusion
 
-Asynchronous communication between services is a painful point. It can lead to customer dissatisfaction, losses to the business, and increased workload for the customer support team. This post shows how we deal with these kinds of issues. Efficiently solving them requires deep expertise in SQL, the business, tech stack, data analysis, and scripting.
+Asynchronous communication between services is a painful point. It can lead to customer dissatisfaction, losses to the business, and increased workload for the customer support team. This post shows how we deal with these kinds of issues. Efficiently solving them requires deep expertise in SQL, the business, the tech stack, data analysis, and programming.
 
 Happy coding and bug-free apps to you, our reader!
