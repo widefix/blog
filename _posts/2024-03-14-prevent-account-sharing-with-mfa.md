@@ -103,8 +103,8 @@ Active login sessions for all users regardless of the MFA toggle. This one has t
 ![Regardless MFA toggle reports](/images/prevent-account-sharing/average-per-user-reports.png)
 
 Looking into these charts, we conclude that:
-- The number of active paying users increases.
-- The number of sharing account reports based on the token solution decreases. The regression line predicts a drop from 170 points to 120, almost a 30% drop when IP and device differ. That's a vast improvement!
+- The number of new paying signups increases. Roughly 30% more new signups daily.
+- The number of sharing account reports based on the token solution decreases. The regression line predicts a drop from 170 points to 120, almost a 30% drop when IP and device differ.
 - The number of login sessions per user decreases for users with MFA enabled. This improvement is significant compared to users with MFA disabled.
 
 ## Summary
