@@ -114,3 +114,10 @@ In this post, you learned how the positive impact of MFA enabling in your projec
 Finally, you got a beneficial insight — MFA positively impacts user behavior. It indeed prevents users from sharing accounts. The improvement is significant — roughly 30% more new signups. Additionally, it's a security improvement for your app. It is worth considering for your project. But keep in mind that your auditory can be different, so measure the impact.
 
 In the next step, we will implement the login session limits. We expect an even more positive impact and will measure the results. Stay tuned!
+
+
+Follow me on social networks not to miss the next post:
+
+- [LinkedIn](https://www.linkedin.com/in/ka8725)
+- [Twitter](https://twitter.com/ka8725)
+- [GitHub](https://github.com/ka8725)
