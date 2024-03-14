@@ -4,7 +4,7 @@ title: "Prevent account sharing with MFA"
 headline: "Prevent account sharing with MFA"
 modified: 2024-03-14 15:57:54 +0100
 description: "Learn how Multi Factor Authentication (MFA) can help you prevent account sharing and unauthorized access to your data."
-tags: [metabase]
+tags: [rails-development, data-analysis]
 featured_post: false
 toc: true
 image: fingerprint.png
