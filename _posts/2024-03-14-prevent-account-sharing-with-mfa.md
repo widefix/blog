@@ -12,7 +12,7 @@ image: fingerprint.png
 
 TL;DR: MFA increased our app new signups by 30% daily. It can help you but measure the impact of the changes.
 
-Preventing account sharing in your app is vital. Different methods tackle this. Recently, we've been focusing on the issue. We discovered a simple, low-risk fix. It protects revenue and boosts security. Also, it aids in generating dynamic reports. This solution allows us to track data. It helps manage violation cases. Check out how we achieved this.
+Preventing account sharing in your app is vital. Various methods tackle this. Recently, we've been focusing on the issue. We discovered a simple, low-risk solution. It protects revenue and boosts security. It assists in generating dynamic reports. This solution allows us track data. It helps to manage violation cases. Look how we have achieved this.
 
 ## Why to prevent sharing account
 
