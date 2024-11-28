@@ -11,7 +11,6 @@ gem 'stringex'
 gem 'jekyll-redirect-from'
 gem 'jekyll-extlinks'
 gem 'jekyll-toc'
-gem "ffi", "< 1.17.0"
 
 group :jekyll_plugins do
   # (other jekyll plugins)
