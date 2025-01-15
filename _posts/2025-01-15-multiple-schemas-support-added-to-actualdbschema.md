@@ -10,7 +10,7 @@ toc: true
 image: actual_db_schema-081.png
 ---
 
-Good day, everyone! We're excited to announce the [release of actual_db_schema v0.8.1](https://github.com/widefix/actual_db_schema/releases/tag/v0.8.1)! 🎉 This milestone is particularly special as it focuses entirely on addressing feedback from our valued users. We encourage you to check out the updates and improvements introduced in this release.
+Good day, everyone! I'm excited to announce the [release of actual_db_schema v0.8.1](https://github.com/widefix/actual_db_schema/releases/tag/v0.8.1)! 🎉 This milestone is particularly special as it focuses entirely on addressing feedback from our valued users. Check out the updates and improvements introduced in this release.
 
 ## Rake task added to initialize the gem
 
