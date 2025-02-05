@@ -24,8 +24,6 @@ For example, a customer may have a premium status within the app, while Stripe s
 
 This blog post outlines the approach we took to resolve such issues in our app, which had around 80k users, with 10% on the premium plan. We identified instances of both overpayment and underpayment, which could be attributed to manual data manipulation in Stripe, missing webhooks, or bugs in our system.
 
-{% include seeking_dev_help_magnete.html %}
-
 ## The plan to reconcile data with Stripe
 
 While we used Ruby for scripting, this solution is universal and can be applied to applications written in other languages like Python, Node.js, Java, Rust, and Go.
@@ -92,8 +90,6 @@ end
 ```
 
 We have a special folder in the app, `app/scripts`, where we put this kind of ad-hoc code. Later, we use Rails runner to execute them on the production server against the real data. They can also be run locally for testing purposes during script development. This script code was put into `app/scripts/stripe_classes.rb` file.
-
-{% include seeking_dev_help_magnete.html %}
 
 ## The Stripe data scrapper
 
@@ -218,8 +214,6 @@ production:
 
 We chose that time as the servers are less loaded during those hours.
 
-{% include seeking_dev_help_magnete.html %}
-
 ## Analyze Stripe data discrepancies with SQL
 
 We are all set. With the data in place, we can use SQL to identify all deviations. This will involve using common table expression (CTE), views, joins, filters, and aggregation functions.
@@ -311,8 +305,6 @@ select count(u.*) from stripe.users_with_actual_plan u
 
 Further data analysis shows that 514 of these 983 discrepancies are related to deleted users. It turns out our app employs a so-called soft delete feature, meaning they are not actually deleted but marked as such, preventing them from using the app anymore. Well, now the situation looks much better. It's just a 5% margin of error, not the 10% we initially thought. It's almost within 3% of the standard deviation. Not so bad.
 
-{% include seeking_dev_help_magnete.html %}
-
 ## Fixing the data deviations between the app and Stripe
 
 All actions related to fixing data require a thorough understanding of the app at a good level. We can either examine the instances of discrepancies one by one, allowing us to understand what happened to each of them. When we analyze each instance of discrepancy, we check the app database, logs, Papertrail records, Stripe logs, Rollbar, and any other data sources that could help us determine what happened to a certain user.
@@ -346,8 +338,6 @@ end
 ```
 
 `PlanChangeSchedule` is a special table that stores the user's plan change requests. It's used to prevent concurrent plan updates. The `lock` method is used to prevent concurrent plan updates. If another job attempts to acquire the lock simultaneously, it will wait until this one is completed. The `synchronize!` method is used to synchronize the user's plan with the actual Stripe subscription. The `cancel_account` method is used to cancel the user's account if there is no actual subscription.
-
-{% include seeking_dev_help_magnete.html %}
 
 After fixing the bug, we transferred all users who had not used the app in the last 90 days to the free plan. There were 391 such accounts. The remaining users got moved to the paid subscription. In the end, the result looked like that:
 - 30 users got moved to the free plan;

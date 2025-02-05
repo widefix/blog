@@ -26,8 +26,6 @@ This article shares the approach we took to apply the new design in one of our p
 - Implementing traffic control and advanced caching.
 - Making SEO optimization easier.
 
-{% include seeking_dev_help_magnete.html %}
-
 ## Why redesigning a Ruby on Rails app
 
 There are several reasons why an app may consider implementing a new UI/UX design. Regardless of the motive, the ultimate goal is always the same - **to increase revenue**. Note, that keeping users using the app and not going away is the same goal.  Due to an old and unhandy design, an app can make the customers leave. In this case, redesign also can help. If it's clear that a redesign won't have a positive impact on revenue, it may be an unnecessary expense. Redesigning is usually an expensive change. So learn from the users if the design is a problem before making this decision.
@@ -69,8 +67,6 @@ Switching to the new design made the project more attractive to users, resulting
 ![User signups dynamics](/images/users-increase.png)
 
 The release date was on the 1st of February 2021.
-
-{% include seeking_dev_help_magnete.html %}
 
 ## Why our approach of Ruby on Rails app redesign is cheaper and less risky
 
