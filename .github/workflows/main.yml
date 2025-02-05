@@ -44,6 +44,8 @@ jobs:
       - run: bundle exec jekyll build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3 # This will automatically upload an artifact from the '/_site' directory
+        with:
+          path: _site
 
   # Deployment job
   deploy:
