@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3 # This will automatically upload an artifact from the '/_site' directory
         with:
-          path: _site
+          name: github-pages
 
   # Deployment job
   deploy:
@@ -57,4 +57,11 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v3
+        env:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        with:
+          artifact_name: github-pages
+          token: ${{ github.token }}
+          preview: true
