@@ -44,12 +44,24 @@
         <h1 class="entry-title">{% if page.headline %}{{ page.headline }}{% else %}{{ page.title }}{% endif %}</h1>
         <div class="entry-running">
           <div class="display-flex">
-            {% picture /images/{{ site.owner.avatar }} --alt {{ site.owner.name }} --img class="author-photo" %}
+            {% if page.author %}
+              {% assign author = page.author %}
+            {% else %}
+              {% assign author = site.owner %}
+            {% endif %}
+
+            {% if author.avatar %}
+              {% picture /images/{{ author.avatar }} --alt {{ author.name }} --img class="author-photo" %}
+            {% endif %}
             <div class="author-data">
               <span class="author vcard">
                 <span class="fn">
-                  <a href="/about-author/" title="About {{ site.owner.name }}">  {{ site.owner.name }}
-                  </a>
+                  {% if page.author %}
+                    {{ page.author.name }}
+                  {% else %}
+                    <a href="/about-author/" title="About {{ site.owner.name }}">  {{ site.owner.name }}
+                    </a>
+                  {% endif %}
                 </span>
               </span>
               <div class="entry-date date published">
@@ -59,16 +71,16 @@
               </div>
               <div class="author-socials">
                 <span class="social-author">
-                  <a href="http://github.com/{{ site.owner.github }}" title="{{ site.owner.name}} on Github" target="_blank">
+                  <a href="http://github.com/{{ author.github }}" title="{{ author.name}} on Github" target="_blank">
                     <i class="fab fa-github-square"></i>
                   </a>
                 </span>
                 <span class="social-author">
-                  <a href="http://linkedin.com/in/{{ site.owner.linkedin }}" title="{{ site.owner.name}} on LinkedIn" target="_blank"><i class="fab fa-linkedin"></i>
+                  <a href="http://linkedin.com/in/{{ author.linkedin }}" title="{{ author.name}} on LinkedIn" target="_blank"><i class="fab fa-linkedin"></i>
                   </a>
                 </span>
                 <span class="social-author">
-                  <a href="http://twitter.com/{{ site.owner.twitter }}" title="{{ site.owner.name}} on Twitter" target="_blank">
+                  <a href="http://twitter.com/{{ author.twitter }}" title="{{ author.name}} on Twitter" target="_blank">
                     <i class="fab fa-twitter-square"></i>
                   </a>
                 </span>
