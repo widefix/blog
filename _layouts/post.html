@@ -21,8 +21,8 @@
       "dateModified": {% if page.modified %}"{{ page.modified }}"{% else %}"{{ page.date }}"{% endif %},
       "author": [{
           "@type": "Person",
-          "name": "Andrei Kaleshka",
-          "url": "https://www.linkedin.com/in/ka8725/"
+          "name": {% if page.author %}"{{ page.author.name }}"{% else %}"Andrei Kaleshka"{% endif %},
+          "url": {% if page.author %}"https://www.linkedin.com/in/{{ page.author.linkedin }}/"{% else %}"https://www.linkedin.com/in/ka8725/"{% endif %}
         }]
     }
     </script>
