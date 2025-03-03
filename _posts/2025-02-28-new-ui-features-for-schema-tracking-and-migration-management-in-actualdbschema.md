@@ -29,6 +29,12 @@ Navigate to the migrations page (`http://localhost:3000/rails/migrations`) and c
 - **Filtering**: Search for specific tables using a built-in filter.
 - **Migration Links**: Click any annotation to jump to the corresponding migration details.
 
+**Schema Page on the UI**
+![Schema Page on the UI](/images/schema_page.png)
+
+**Schema Page with Filter**
+![Schema Page with Filter](/images/schema_page_with_filter.png)
+
 ## Clean Up Broken Migrations
 
 Managing old migrations can be challenging, especially when migration files go missing. In this release, we’ve introduced a **Broken Versions** page and rake tasks to clean up these records.
@@ -48,6 +54,8 @@ http://localhost:3000/rails/broken_versions
 ```
 
 You can delete them **individually** or use the **Delete All** button to clean up everything at once.
+
+![Broken versions page](/images/broken_versions_page.png)
 
 2️⃣ **Using a Rake Task**
 
@@ -72,6 +80,8 @@ rake actual_db_schema:delete_broken_versions["20250224103352 20250224103358", "p
 ## Filter Migrations in the UI
 
 Tired of scrolling through hundreds of migrations? We've added a search bar to the migrations page, making it easy to find migrations by **name** or **content**. Whether you're tracking down a specific change or reviewing past updates, finding what you need is now faster and more intuitive.
+
+![Migrations page with filter](/images/migrations_page_with_filter.png)
 
 ## Customize Your Migrated Folder Location
 
