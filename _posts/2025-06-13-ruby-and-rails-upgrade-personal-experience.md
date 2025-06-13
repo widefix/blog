@@ -18,7 +18,7 @@ Upgrading Ruby and Rails is necessary to keep your app running smoothly and secu
 
 ## Current stack of the project
 
-The project ran on Ruby 3.1.4 and Rails 6.1.7.6, with an upgrade target of Ruby 3.4.4 and Rails 7.2.
+The project ran on Ruby 3.1.4 and Rails 6.1.7.6. Upgrade targets to Ruby 3.4.4 and Rails 7.2.
 
 It’s a Rails monolith mainly serving as a GraphQL API backend. Originally full-stack, the frontend was moved to a separate React app, though some unused legacy controllers, views, helpers, and gems remain.
 
