@@ -44,11 +44,11 @@ Then I remove the `Gemfile.lock` file and run `bundle install` to generate a new
 
 Fortunately, all gems were installed successfully. But installed gems don't guarantee compatibility. So, right after that, I run the test suite to ensure everything works as expected. Besides tests I have set to myself the following checks to pass:
 
-- Rubocop
 - Assets precompilation
 - Rails console should work
 - Rails server should start without errors
 - Sidekiq should start without errors
+- Rubocop should pass without errors
 
 But first, I need to fix all tests.
 
@@ -236,6 +236,42 @@ At this moment I thought it was incompatibility between Ruby 3.4.4 and Rails 6.1
 
 Ok, tests are passing, assets are precompiled, Rails console works, Rails server starts without errors, and Sidekiq starts without issues. I can now deploy the app to Heroku.
 
-Finally, I upgrade Rubocop and regenerated the `.rubocop_todo.yml` file. And... `Lint/EmptyInterpolation` cop is failing. I downgrade Rubocop to the previous version and made a [pull request to the Rubocop team](https://github.com/rubocop/rubocop/pull/14245).
+Moving on to the next step - upgrading Rubucop.
+
+---
+💣 I upgrade Rubocop and receive a lot of violations with the message `RSpec/BeEq: Prefer be over eq` in a line like this `expect(some_value).to eq(expected_value)`
+
+✅ disable `RSpec/BeEq` cop in the `.rubocop.yml` file.
+
+I decide not to fix them right now. I would like to have the upgrade task to contain as few changes as possible. Moreover, I have doubts that using `be` instead of `eq` is a good idea. I prefer to use `eq` for equality checks it's been working in this project for 7 years and everything has been fine. Why should we change everything now because someone has a different opinion? I will revisit this later, maybe after the Rails upgrade.
+
+So I disable the `RSpec/BeEq` cop in the `.rubocop.yml` file:
+
+```yaml
+RSpec/BeEq:
+  Enabled: false
+```
+
+---
+
+💣 Some cops are failing with `undefined method 'empty?' for an instance of Integer (NoMethodError)`
+
+✅ Do not use Rubocop v1.76.0.
+
+It turned out the `Lint/EmptyInterpolation` cop was failing not only for me but in general. The issue was reproduciable in Rubocop v1.76.0. The cop checks for empty interpolations like `#{}` and raises an error if it finds one. But in Ruby 3.4, the `empty?` method is not defined for `Integer` and other primitives, which causes the error.
+
+I downgrade Rubocop to the previous version and made a [pull request to the Rubocop team](https://github.com/rubocop/rubocop/pull/14245). It was merged almost immediately, and the fix was released in Rubocop v1.76.1. Kudos to the Rubocop team for their quick response! Moreover, I became 900th contributor of RuboCop - congrats me! 🎉
+
+---
+
+There were some other cops that were failing. To avoid too much changes in the code, I regenerate the `.rubocop_todo.yml` file:
+
+```shell
+rubocop --auto-gen-config
+```
+
+And push the changes to the repository.
+
+Some developers might argue it's best to fix all the violations now — but I disagree. This kind of effort often wastes time without meaningfully improving code quality or test coverage. So, what's the real benefit? I recommend asking yourself: is it worth it? I prefer the 80/20 rule — 20% of the effort yields 80% of the results. In this case, spending 80% of the effort for a questionable 20% gain just isn't worth it.
 
 Ruby upgrade is done! 🎉
