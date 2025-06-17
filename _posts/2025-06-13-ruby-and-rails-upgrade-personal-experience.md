@@ -56,7 +56,6 @@ But first, I need to fix all tests.
 
 Next you see the list of issues/exceptions I encountered during running tests and the fixes I made.
 
----
 <a id="issue-1" href="#issue-1">💣 issue 1 🔗</a>
 
 ```ruby
@@ -67,7 +66,6 @@ uninitialized constant GraphQL::Compatibility::ExecutionSpecification::Specifica
 
 New Ruby no longer loads `OpenStruct` (and some more standard libraries) by default.
 
----
 <a id="issue-2" href="#issue-2">💣 issue 2 🔗</a>
 
 ```ruby
@@ -78,7 +76,6 @@ uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger
 
 New Ruby no longer loads `Logger` by default.
 
----
 <a id="issue-3" href="#issue-3">💣 issue 3 🔗</a>
 
 ```
@@ -90,7 +87,6 @@ Bundler::GemRequireError:
 
 The project has `bootstrap` gem. Even though it's useless since the frontend is now a separate React app, I decide to keep it for now. Removing the legacy code is a separate task, and I don't want to mix it with the Ruby upgrade.
 
----
 <a id="issue-4" href="#issue-4">💣 issue 4 🔗</a>
 
 ```
@@ -102,7 +98,7 @@ Bundler::GemRequireError:
 
 ✅ upgrade `sidekiq-cron` gem to the latest version.
 
----
+
 <a id="issue-5" href="#issue-5">💣 issue 5 🔗</a>
 
 ```
@@ -114,11 +110,11 @@ TSort::Cyclic:
 
 Neither dart, nor sass engines are used in the project, so I remove them to avoid the cyclic dependency error. The gems were added by the recommendation of the `bootstrap` gem. But those gems are not needed for the project, so I remove them.
 
----
+
 
 At this point the tests started to run, not all of them passed, but at least I could see the progress. I leave the tests fixing for later and move on to the next step - assets precompilation. On that step I encountered the following issues.
 
----
+
 <a id="issue-6" href="#issue-6">💣 issue 6 🔗</a>
 
 ```ruby
@@ -129,7 +125,7 @@ LoadError: cannot load such file -- drb (LoadError)
 
 New Ruby no longer loads `drb` by default, but it is required by the `rails` gem for assets precompilation.
 
----
+
 <a id="issue-7" href="#issue-7">💣 issue 7 🔗</a>
 
 ```ruby
@@ -140,7 +136,7 @@ error Command "build:css" not found.
 
 The `cssbundling-rails` gem is not used in the project, so I remove it to avoid the error. The project uses `sassc-rails` for CSS processing, so I don't need `cssbundling-rails`. This gem was also added by the recommendation of the `bootstrap` gem.
 
----
+
 <a id="issue-8" href="#issue-8">💣 issue 8 🔗</a>
 
 Assets precompilation failed on Heroku with the following error:
@@ -196,11 +192,11 @@ Assets precompilation failed on Heroku with the following error:
 
 The `assets:precompile` task forced me to upgrade Node.js to a newer version, which in turn caused the `compression-webpack-plugin` to fail. The error message indicates that the OpenSSL version used by Node.js does not support certain cryptographic operations required by the plugin. Setting the `NODE_OPTIONS` environment variable to `--openssl-legacy-provider` allows it to work with the legacy OpenSSL provider. In the future, I plan to upgrade the `compression-webpack-plugin` to a version that supports the new OpenSSL version, but for now, this workaround is sufficient. Current version of `compression-webpack-plugin` is `11.1.0` but the app has installed `4.0.1`. Even though, the previous upgrade was a few years ago. The number of releases in between is scary. JavaScript ecosystem is a nightmare 😢.
 
----
+
 
 Eventually, assets got precompiled successfully. Hooray! 🎉 Switchig back to the failed tests.
 
----
+
 
 <a id="issue-9" href="#issue-9">💣 issue 9 🔗</a>
 
@@ -218,7 +214,7 @@ Note: it turned out AI was too helpful here. Since there were several places in 
 
 Unfortunately, AI is mostly useless when it comes to Ruby/Rails upgrades in general. But it’s quite handy for repetitive, monotonous tasks like this one.
 
----
+
 <a id="issue-10" href="#issue-10">💣 issue 10 🔗</a>
 
 ```ruby
@@ -229,7 +225,7 @@ Unfortunately, AI is mostly useless when it comes to Ruby/Rails upgrades in gene
 
 New Ruby has changes in the `Regexp` class, which caused this error. I personally never use `Regexp.new` for regexps. I don't know why it was used in the project like that. But it was failing, so I fixed it. I must admit, it was pretty tricky to figure which parameters the new way of initializing `Regexp` accepts. I had to check Ruby sources for to come up with this solution. And surprise - AI was not helpful here at all 😜.
 
----
+
 <a id="issue-11" href="#issue-11">💣 issue 11 🔗</a>
 
 ✅ monkey-patch
@@ -271,13 +267,13 @@ end
 
 At this moment I thought it was incompatibility between Ruby 3.4.4 and Rails 6.1. Even created a [discussion](https://www.reddit.com/r/rails/comments/1l77bri/rails_6_compatibility_with_ruby_34/) on Reddit. But later I found out that it was actually a problem with `dry-auto_inject` gem. See more details in the [comment](https://github.com/dry-rb/dry-auto_inject/issues/80#issuecomment-2968324620) I left in the reported issue. Later, I removed those monkey-patches and replaced the auto-injection with an explicit class initialization. Fortunately, the project had only one controller that used auto-injection, so it was not a big deal. Again, AI is completely useless here. It generates some crazy fixes that don't work at all. I had to figure it out myself.
 
----
+
 
 Ok, tests are passing, assets are precompiled, Rails console works, Rails server starts without errors, and Sidekiq starts without issues. I can now deploy the app to Heroku.
 
 Moving on to the next step - upgrading Rubucop.
 
----
+
 <a id="issue-12" href="#issue-12">💣 issue 12 🔗</a>
 
 I upgrade Rubocop and receive a lot of violations with the message `RSpec/BeEq: Prefer be over eq` in a line like this `expect(some_value).to eq(expected_value)`.
@@ -293,7 +289,7 @@ RSpec/BeEq:
   Enabled: false
 ```
 
----
+
 
 <a id="issue-13" href="#issue-13">💣 issue 13 🔗</a>
 
@@ -305,7 +301,7 @@ It turned out the `Lint/EmptyInterpolation` cop was failing not only for me but 
 
 I downgrade Rubocop to the previous version and made a [pull request to the Rubocop team](https://github.com/rubocop/rubocop/pull/14245). It was merged almost immediately, and the fix was released in Rubocop v1.76.1. Kudos to the Rubocop team for their quick response! Moreover, I became 900th contributor of RuboCop - congrats me! 🎉
 
----
+
 
 There were some other cops that were failing. To avoid too much changes in the code, I regenerate the `.rubocop_todo.yml` file:
 
@@ -333,7 +329,7 @@ This time, I had to update several gems to make them compatible with Rails 7.2. 
 
 Note, I have not dived deep into each issue. When I encountered an issue, I simply tried to upgrade to max version compatible with the current stack. In all cases that worked well. If even upgrade didn't help, I would look into the issue more deeply. But in this case, fortunately I didn't have to do that.
 
----
+
 <a id="issue-14" href="#issue-14">💣 issue 14 🔗</a>
 
 ```
@@ -347,7 +343,7 @@ for details.
 
 ✅ upgrade `paper_trail` gem to 16.0.0.
 
----
+
 <a id="issue-15" href="#issue-15">💣 issue 15 🔗</a>
 
 ```
@@ -361,7 +357,7 @@ So, because Gemfile depends on rails = 7.2.2.1
 
 ✅ upgrade `paranoia` gem to 3.0.1.
 
----
+
 <a id="issue-16" href="#issue-16">💣 issue 16 🔗</a>
 
 <br>
@@ -395,7 +391,7 @@ NoMethodError:
 
 ✅ upgrade `devise` gem to 4.9.4.
 
----
+
 <a id="issue-17" href="#issue-17">💣 issue 17 🔗</a>
 
 During production deployment on Heroku, I receive the following error on the assets precompilation step:
@@ -409,5 +405,3 @@ Uglifier::Error: Unexpected token: keyword (const). To use ES6 syntax, harmony m
 ```ruby
 config.assets.js_compressor = :terser # instead of :uglifier used before
 ```
-
----
