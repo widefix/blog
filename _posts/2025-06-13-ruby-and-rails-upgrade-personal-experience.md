@@ -318,3 +318,96 @@ And push the changes to the repository.
 Some developers might argue it's best to fix all the violations now — but I disagree. This kind of effort often wastes time without meaningfully improving code quality or test coverage. So, what's the real benefit? I recommend asking yourself: is it worth it? I prefer the 80/20 rule — 20% of the effort yields 80% of the results. In this case, spending 80% of the effort for a questionable 20% gain just isn't worth it.
 
 Ruby upgrade is done! 🎉
+
+## My log of upgrading Rails
+
+Now that Ruby is upgraded, I can move on to upgrading Rails. I start by updating the `Gemfile` to use Rails 7.2:
+
+```ruby
+gem 'rails', '7.2.2.1'
+```
+
+Then I remove the `Gemfile.lock` file and run `bundle install` to generate a new lock file with the updated Rails version and all dependencies compatible with the new Rails version. If some gems were not compatible, I would update them to the latest versions that support Rails 7.2.
+
+This time, I had to update several gems to make them compatible with Rails 7.2. I will list them below, along with the fixes I made.
+
+Note, I have not dived deep into each issue. When I encountered an issue, I simply tried to upgrade to max version compatible with the current stack. In all cases that worked well. If even upgrade didn't help, I would look into the issue more deeply. But in this case, fortunately I didn't have to do that.
+
+---
+<a id="issue-14" href="#issue-14">💣 issue 14 🔗</a>
+
+```
+PaperTrail 12.0.0 is not compatible with ActiveRecord 7.2.2.1. We allow PT
+contributors to install incompatible versions of ActiveRecord, and this
+warning can be silenced with an environment variable, but this is a bad
+idea for normal use. Please install a compatible version of ActiveRecord
+instead (>= 5.2, < 6.2). Please see the discussion in paper_trail/compatibility.rb
+for details.
+```
+
+✅ upgrade `paper_trail` gem to 16.0.0.
+
+---
+<a id="issue-15" href="#issue-15">💣 issue 15 🔗</a>
+
+```
+Because paranoia >= 2.5.0, < 2.6.3 depends on activerecord >= 5.1, < 7.1
+  and rails >= 7.2.2.1, < 8.0.0.beta1 depends on activerecord = 7.2.2.1,
+  paranoia >= 2.5.0, < 2.6.3 is incompatible with rails >= 7.2.2.1, < 8.0.0.beta1.
+So, because Gemfile depends on rails = 7.2.2.1
+  and Gemfile depends on paranoia = 2.6.2,
+  version solving has failed.
+```
+
+✅ upgrade `paranoia` gem to 3.0.1.
+
+---
+<a id="issue-16" href="#issue-16">💣 issue 16 🔗</a>
+
+<br>
+<details>
+<summary>ActiveSupport::Dependencies.reference is deprecated - click to expand!</summary>
+
+<pre><code>
+NoMethodError:
+  undefined method 'reference' for module ActiveSupport::Dependencies
+# ./config/application.rb:12:in '<top (required)>'
+# ./config/environment.rb:2:in 'Kernel#require_relative'
+# ./config/environment.rb:2:in '<top (required)>'
+# ./spec/rails_helper.rb:3:in '<top (required)>'
+# ./spec/mailers/mailer_spec.rb:1:in '<top (required)>'
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:52: warning: already initialized constant Devise::ALL
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:52: warning: previous definition of ALL was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:53: warning: already initialized constant Devise::CONTROLLERS
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:53: warning: previous definition of CONTROLLERS was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:54: warning: already initialized constant Devise::ROUTES
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:54: warning: previous definition of ROUTES was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:55: warning: already initialized constant Devise::STRATEGIES
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:55: warning: previous definition of STRATEGIES was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:56: warning: already initialized constant Devise::URL_HELPERS
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:56: warning: previous definition of URL_HELPERS was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:59: warning: already initialized constant Devise::NO_INPUT
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:59: warning: previous definition of NO_INPUT was here
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:62: warning: already initialized constant Devise::TRUE_VALUES
+~/.rbenv/versions/3.4.4/lib/ruby/gems/3.4.0/gems/devise-4.7.0/lib/devise.rb:62: warning: previous definition of TRUE_VALUES was here
+</code></pre>
+</details>
+
+✅ upgrade `devise` gem to 4.9.4.
+
+---
+<a id="issue-17" href="#issue-17">💣 issue 17 🔗</a>
+
+During production deployment on Heroku, I receive the following error on the assets precompilation step:
+
+```
+Uglifier::Error: Unexpected token: keyword (const). To use ES6 syntax, harmony mode must be enabled with Uglifier.new(:harmony => true)
+```
+
+✅ replace `uglifier` gem with `terser` and configure the new js compressor in the environment files:
+
+```ruby
+config.assets.js_compressor = :terser # instead of :uglifier used before
+```
+
+---
