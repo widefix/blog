@@ -10,11 +10,13 @@ toc: true
 image:
 ---
 
-Good day, everyone! Today, I want to share my personal experience with upgrading Ruby and Rails in a project. This is not a tutorial but rather a reflection on the process, challenges, and lessons learned.
+Good day, everyone! Today, I want to share my personal experience upgrading Ruby and Rails in a project. This is not a tutorial, but rather a reflection on the process, challenges, and lessons learned. I also honestly share where I used AI tools to speed up the process. Where they were useful and where they weren't. The post is quite long, so grab a cup of coffee and enjoy the read.
 
-## Why upgrade Ruby and Rails
+## Why upgrade Ruby and Rails?
 
-Upgrading Ruby and Rails is necessary to keep your app running smoothly and securely. But for me, the main reason was Heroku deprecating old Ruby versions — without upgrading, deployments would eventually fail.
+Upgrading Ruby and Rails is necessary to keep your app running smoothly and securely. For me, an additional and undeniable motivation was that Heroku deprecates older Ruby versions. The next Heroku stack will most likely not support Ruby 3.1. Without an upgrade, deployments on Heroku would eventually fail.
+
+The client will definitely stay with Heroku (yes, despite the [recent epic failure](https://www.reddit.com/r/Heroku/comments/1l7sq5p/is_something_happening_cant_access_heroku_also_my/) and price increases). So, I had to upgrade Ruby and Rails to keep the app running on Heroku.
 
 ## Current stack of the project
 
