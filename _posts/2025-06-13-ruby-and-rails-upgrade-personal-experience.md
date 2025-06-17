@@ -267,8 +267,6 @@ end
 
 At this moment I thought it was incompatibility between Ruby 3.4.4 and Rails 6.1. Even created a [discussion](https://www.reddit.com/r/rails/comments/1l77bri/rails_6_compatibility_with_ruby_34/) on Reddit. But later I found out that it was actually a problem with `dry-auto_inject` gem. See more details in the [comment](https://github.com/dry-rb/dry-auto_inject/issues/80#issuecomment-2968324620) I left in the reported issue. Later, I removed those monkey-patches and replaced the auto-injection with an explicit class initialization. Fortunately, the project had only one controller that used auto-injection, so it was not a big deal. Again, AI is completely useless here. It generates some crazy fixes that don't work at all. I had to figure it out myself.
 
-
-
 Ok, tests are passing, assets are precompiled, Rails console works, Rails server starts without errors, and Sidekiq starts without issues. I can now deploy the app to Heroku.
 
 Moving on to the next step - upgrading Rubucop.
@@ -405,3 +403,243 @@ Uglifier::Error: Unexpected token: keyword (const). To use ES6 syntax, harmony m
 ```ruby
 config.assets.js_compressor = :terser # instead of :uglifier used before
 ```
+
+<a id="issue-18" href="#issue-18">💣 issue 18 🔗</a>
+
+Rails console fails with the following error:
+
+```
+~/.rbenv/versions/3.4.4/lib/ruby/site_ruby/3.4.0/bundler/rubygems_integration.rb:215:in 'block (2 levels) in Kernel#replace_gem': can't activate listen (~> 3.5), already activated listen-3.0.8. Make sure all dependencies are added to Gemfile. (Gem::LoadError)
+```
+
+✅ upgrade `listen` gem to 3.9.0.
+
+<a id="issue-19" href="#issue-19">💣 issue 19 🔗</a>
+
+```ruby
+RuntimeError:
+  Attach interfaces using `implements(SomeType)`, not `include(SomeType)`
+```
+
+✅ upgrade `graphql` gem to 1.13.25.
+
+At that point all gems were updated to the latest versions compatible with Rails 7.2.
+
+<a id="issue-20" href="#issue-20">💣 issue 20 - Zeitwerk 🔗</a>
+
+Next, I encounter a lot of issues related to code eager loading. Rails 7.2 made zeitwerk the default code loader, which is stricter than the previous classic loader. It requires all classes and modules to be defined in files with matching names and paths. This means that if you have a class `Foo::Bar`, it must be defined in a file `foo/bar.rb`.
+
+Unfortunately, the project has a lot of code that doesn't follow this convention. I could not to come up with any Zeitwerk configuration that would make it work without changing the code. So, I decided to load those failing files manually in an initializer. I created a new initializer file `config/initializers/zeitwerk.rb` and added the following code (note, the code is obfuscated for security reasons):
+
+```ruby
+# These are classes that don't follow the current inflection rules, and hence Zeitwerk conventions.
+custom_classes = %w[
+  AlphaProcessJob
+  BetaNotificationMailer
+  GammaSyncService
+]
+
+# Map underscored file names to class names that don't follow Zeitwerk conventions
+mapping = custom_classes.map { |klass| [klass.gsub(/([a-z\d])([A-Z])/, '\1_\2').downcase, klass] }.to_h
+
+# Register inflection mapping
+Rails.autoloaders.main.inflector.inflect(mapping)
+
+# Ignore specific folders
+%w[
+  app/modules/foo
+  app/modules/bar
+  app/modules/baz
+].each do |folder|
+  Rails.autoloaders.main.ignore(Rails.root.join(folder))
+end
+
+# Manually require a few specific files
+require Rails.root.join("app/modules/foo/core_update_service.rb")
+
+# Load all Ruby files in nested folders
+Dir[Rails.root.join("app/modules/bar/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("app/modules/baz/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("app/modules/shared/**/*.rb")].each { |f| require f }
+```
+
+In the inflections config (`config/initializers/inflections.rb` file) the project had some abbreviations configured, like this:
+
+```ruby
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym 'ALPHA'
+  inflect.acronym 'BETA'
+  inflect.acronym 'GAMMA'
+end
+```
+
+Having these inflections, Zeitwerk expects `ALPHAProcessJob` class defined in `alpha_process_job.rb` file. But the current class name in this file is `AlphaProcessJob`. The same applies to some more classes. I don't want to jeopardize the existing code by making the class renames. Especially, when some of these classes are Sidekiq jobs. Renaming job classes could fail the existing jobs in production. When it comes to other files, I just want to mitigate any possible risks. Again, I want Ruby and Rails upgrade to be only an upgrade, but not a refactoring task.
+
+Some folders in the project violate Zeitwerk conventions so badly that neither inflections nor autoloading of these folders doesn't help. For example, the same folder, say `app/modules/foo` has a file `bar.rb` with a class `Bar` (without the required `Foo` namespace!). At the same time, there is another file, say `qux.rb`, in the same folder `app/modules/foo` with a class under the namespace `Foo::Qux`. Crazy stuff! I don't know how it has been working before.
+
+For that reason, I ignore these tricky folders and load the files from these folders manually. Some files needed specific loading order (like class `B` depends on class `A`), so I explicitly required them in the initializer and iterate over the files that depend on base classes like this one with a loop.
+
+If some class is wrapped in a module, Zeitwerk expects the module to be defined in a file with the same name as the module. For example, if you have a class `Foo::Bar`, it must be defined in a file `foo/bar.rb`, it expects `foo.rb` file to have defined `Foo` module/class. The project has several modules missed like that. So, I add the necessary files that define these missed modules. Not a big deal, just a few files.
+
+<a id="issue-21" href="#issue-21">💣 issue 21 🔗</a>
+
+
+There were a lot of `to_s` methods in the codebase that were failing with the following error:
+
+```ruby
+wrong number of arguments (given 1, expected 0) (ArgumentError)
+```
+
+✅ change `to_s(:utc)` to `to_fs(:utc)`.
+
+This is a change in Rails 7.2, where `to_s` no longer accepts a format argument. Instead, you should use `to_fs` method for formatting dates and times. I asked AI to fix this issue in the coidebase, and it did a good job.
+
+<a id="issue-22" href="#issue-22">💣 issue 22 🔗</a>
+
+Rails 7 has made some changes on schema.rb. [Read this](https://rubyonrails.org/2022/2/11/this-week-in-rails-rails-7-0-2-schema-versioning-based-on-the-rails-version-and-more-cbcb0592) for more details.
+
+I just regenerate `schema.rb` with `rails db:migrate` and it generates a new schema. The changes I got:
+
+```ruby
+| -ActiveRecord::Schema.define(version: 2025_04_29_203724) do
+| +ActiveRecord::Schema[7.2].define(version: 2025_04_29_203724) do
+
+
+| -    t.datetime "created_at", precision: 6, null: false
+| +    t.datetime "created_at", null: false
+
+| -    t.datetime "updated_at", null: false
+| +    t.datetime "updated_at", precision: nil, null: false
+```
+
+And so on. As you see, the schema is now versioned, and the datetime columns have their precision removed.
+
+<a id="issue-23" href="#issue-23">💣 issue 23 🔗</a>
+
+The codebase has several places iterating over ActiveRecord errors like this:
+
+```ruby
+errors.each do |attribute, message|
+  puts "#{attribute}: #{message}"
+end
+```
+
+This fails, as instead of attribute and message, it returns an instance of `ActiveModel::Error` class now. So, I change the code to:
+
+```ruby
+errors.each do |error|
+  puts "#{error.attribute}: #{error.message}"
+end
+```
+
+Again, AI helped me with that. It identified all places in the codebase where this issue occurred and fixed them. I was surprised how well it worked.
+
+<a id="issue-24" href="#issue-24">💣 issue 24 🔗</
+
+A code like this stopped working:
+
+```ruby
+object.errors[:base] << 'Some error message'
+```
+
+✅ change it to:
+
+```ruby
+object.errors.add(:base, 'Some error message')
+```
+
+This is a change in Rails 7.2, where you should use `add` method to add errors to the base attribute. AI was helpful here as well, it found all places in the codebase where this issue occurred and fixed them.
+
+<a id="issue-25" href="#issue-25">💣 issue 25 🔗</a>
+
+`alias_attribute` method stopped working on deleted attributes that are columns of the delegated object.
+
+Say, we have the following code:
+
+```ruby
+class User < ApplicationRecord
+  belongs_to :address
+
+  delegate :my_column, to: :address
+
+  alias_attribute :new_my_column, :my_column
+end
+```
+
+It would fail with the following error:
+
+```
+User model aliases `my_column`, but `my_column` is not an attribute. Use `alias_method :new_my_column, :my_column` or define the method manually. (ArgumentError)
+
+          raise ArgumentError, "#{self.name} model aliases `#{old_name}`, but `#{old_name}` is not an attribute. " \
+```
+
+✅ change `alias_attribute` to the plain Ruby code like this:
+
+```ruby
+def new_my_column
+  my_column
+end
+```
+
+Fortunately, there were not many places like this in the codebase, so I fixed them manually. AI suggested not working solution, so I had to come up with my own.
+
+<a id="issue-26" href="#issue-26">💣 issue 26 🔗</a>
+
+PaperTrail stopped working at the deserialization step with errors like this:
+
+```ruby
+Psych::DisallowedClass:
+        Tried to load unspecified class: Symbol
+```
+
+✅ I added the following to the `config/application.rb` file:
+
+```ruby
+config.active_record.use_yaml_unsafe_load = true
+```
+
+Some changes in YAML deserialization. See more details on StackOverflow [here](https://stackoverflow.com/questions/72970170/upgrading-to-rails-6-1-6-1-causes-psychdisallowedclass-tried-to-load-unspecif).
+
+<a id="issue-27" href="#issue-27">💣 issue 27 🔗</a>
+
+Custom initializers (in `config/initializers` folder) that use some code defined in the `lib` folder started to fail with an error like this:
+
+```ruby
+NameError:
+  uninitialized constant Foo::Bar
+```
+
+✅ I tried to make Zeitwerk load the `lib` folder, but it didn't help. So, I had to require the necessary files in the initializers manually.
+
+```ruby
+require 'lib/foo/bar'
+
+...
+```
+
+I don't like this solution. But there are not many initializers like this, so I just fixed them manually. Didn't try to use AI here, as I didn't want to waste time on it.
+
+And mostly that's it! 🎉
+
+
+## First impressions
+
+The code autocompletion in the Rails console is much better now. The suggestions are much faster and more accurate. At first glance, the response time for http requests is much faster on Heroku now. I didn't measure it, but it feels snappier. The changes are not in production yet, so I will measure the performance later and compare the results.
+
+I like Zeitwerk as the default code loader. It is much stricter than the classic loader, but it helps to catch issues early.
+
+
+## Conclusion
+
+Upgrading Ruby and Rails is a challenging but rewarding task. It requires careful planning, testing, and sometimes a bit of creativity to work around issues. I hope my experience helps you in your own upgrade journey.
+
+AI tools can be helpful, but they are not a silver bullet. They can speed up the process, but you still need to understand the code and the changes you make. I found AI most useful for repetitive tasks, like fixing the same issue in multiple places. But for more complex issues, I had to rely on my own knowledge and experience.
+
+At first, when I started the upgrade I thought that would be a boring task. But it turned out to be quite interesting and challenging. I learned a lot about the codebase and how Rails works under the hood. I also learned a lot about Ruby 3.4 and Rails 7.2.
+
+Following the 20/80 rule, I focused on the most important changes that would yield the most significant benefits. I didn't try to fix every single issue or violation. Instead, I concentrated on the changes that would make the app work with the new Ruby and Rails versions.
+
+Iterative changes helped me to isolate issues and test each change separately. This way, I could ensure that everything works as expected before moving on to the next step. I highly recommend this approach for any upgrade task.
+
+Additionally, I made some contributions to the open-source community by reporting issues and making pull requests to the gems the project has. I think it's important to give back to the community as it makes me involved in something bigger. Have you ever struggled with finding your purpose, maybe with finding your place in the world? I found that contributing to open-source projects helps me feel more connected to the community and gives me a sense of purpose. I encourage you to do the same.
