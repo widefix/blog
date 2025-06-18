@@ -23,7 +23,7 @@ When using SendGrid to send emails from your Ruby on Rails application, it's ess
 
 After these steps completed, you should have:
 1. The API key (a long abrakadabra string) like this: `SG.ve9OolaiLeenoh0iatoon0.hei8geiz1Shoorohtai6choopah8cahjae9vako8uBa`
-1. Verified domain, let it by `mydomain.com`
+1. Verified domain, let it be `mydomain.com`
 1. Verified sender email address, let it be `hello@mydomain.com`
 
 ### Configure server
