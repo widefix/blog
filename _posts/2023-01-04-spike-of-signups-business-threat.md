@@ -42,5 +42,3 @@ Whether you need help fixing bugs, adding new features, or simply keeping your a
 - **Performance optimization**: If your application is running slowly or experiencing other performance issues, we can help you identify and resolve the problem to improve the speed and reliability of your application.
 
 In addition to these services, we also offer ongoing maintenance plans to ensure that your application stays in top shape. With our maintenance plan, you'll receive regular updates and support to keep your application running smoothly.
-
-If you're interested in learning more about our maintenance services for Ruby on Rails applications, don't hesitate to [contact us](mailto:call@widefix.com). Our team would be happy to discuss your needs and provide you with a customized quote.
