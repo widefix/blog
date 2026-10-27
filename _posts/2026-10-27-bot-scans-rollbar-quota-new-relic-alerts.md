@@ -106,6 +106,8 @@ For my immediate problem, filtering routing errors was a small change with a cle
 
 ## Monitoring capacity is part of reliability
 
+For a team, filtering expected routing errors preserves the error-reporting budget for actionable failures and reduces time spent triaging scanner traffic. A cleaner error feed also makes customer-facing bugs easier to spot and prioritize. The benefit is shared: developers spend less time investigating irrelevant events, and the team gets more useful coverage from its monitoring subscription.
+
 A public application receives traffic its developers never intended. Some of it will ask for nonexistent files, probe common vulnerabilities, or try random routes.
 
 Returning a 404 handles the HTTP request correctly. It does not automatically make the request free.
